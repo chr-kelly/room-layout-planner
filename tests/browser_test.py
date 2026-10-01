@@ -12,6 +12,13 @@ OUT = ROOT / 'test-results'
 OUT.mkdir(exist_ok=True)
 RESULTS = []
 PERF = {}
+LOCALES = ['en','zh-TW','ja','de','fr','es']
+COPY = {code:json.loads((ROOT / f'src/locales/{code}.js').read_text().split('Object.freeze(',1)[1].rsplit(');',1)[0]) for code in LOCALES}
+def text(code,key,**params):
+    value=COPY[code][key]
+    for name,content in params.items():value=value.replace('{'+name+'}',str(content))
+    return value
+CANVAS_LOG = """window.canvasLabels=[];const drawText=CanvasRenderingContext2D.prototype.fillText;CanvasRenderingContext2D.prototype.fillText=function(value,...args){window.canvasLabels.push(String(value));return drawText.call(this,value,...args)}"""
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *_): pass
 server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), functools.partial(QuietHandler, directory=str(ROOT)))
@@ -62,14 +69,15 @@ with sync_playwright() as pw:
     browser=pw.chromium.launch(**launch)
     browser_version=browser.version
     @contextlib.contextmanager
-    def page(mobile=False, init=None, block_vendor=False):
+    def page(mobile=False, init=None, block_vendor=False, locale='en', prefix=''):
         ctx=browser.new_context(viewport={'width':390 if mobile else 1366,'height':844 if mobile else 900},is_mobile=mobile,has_touch=mobile,device_scale_factor=1)
         if init: ctx.add_init_script(init)
         if block_vendor: ctx.route('**/vendor/three/**',lambda route:route.abort())
         p=ctx.new_page();p.set_default_timeout(6000)
         errors=[];requests=[]
         p.on('pageerror',lambda e:errors.append(str(e)));p.on('request',lambda r:requests.append(r.url))
-        p.goto(URL);p.wait_for_function('window.plannerTest !== undefined')
+        target=URL.split('?')[0]+(prefix.strip('/')+'/' if prefix else '')+('' if locale=='en' else locale+'/')+'?test=1#layout'
+        p.goto(target);p.wait_for_function('()=>window.plannerTest !== undefined')
         try:
             yield p,errors,requests
         finally: ctx.close()
@@ -193,7 +201,7 @@ with sync_playwright() as pw:
     run('Missing Three.js dependency does not block the editor',test_vendor_failure)
     def test_3d():
         with page() as (p,e,r):
-            example(p);before=geometry(p);p.locator('#view-3d').click();p.wait_for_function("plannerTest.mode()==='3d'");p.wait_for_timeout(600)
+            example(p);before=geometry(p);p.locator('#view-3d').click();p.wait_for_function("()=>plannerTest.mode()==='3d'");p.wait_for_timeout(600)
             meshes=p.evaluate('plannerTest.scene()');assert len(meshes)==4
             for f in snapshot(p)['furniture']:
                 m=next(m for m in meshes if m['id']==f['id'])
@@ -228,13 +236,138 @@ with sync_playwright() as pw:
             example(p);s=snapshot(p);base=s['furniture'][0];s['furniture']=[{**base,'id':f'load-f-{i}','x':(i%10)*2.5,'y':(i//10)*1.6} for i in range(50)]
             s['walls']=[{'id':f'load-w-{i}','a':{'x':(i%10)*2.5,'y':(i//10)*1.6},'b':{'x':(i%10)*2.5+2,'y':(i//10)*1.6},'height':2.4,'thickness':.12} for i in range(50)]
             s['measurements']=[];s['background']={'id':'load-bg','pixelWidth':2048,'pixelHeight':1024,'x':0,'y':0,'metersPerPixel':.012,'opacity':.5,'visible':True,'locked':True,'calibration':None,'dataURL':'data:image/png;base64,'+base64.b64encode(png(2048,1024)).decode()}
-            p.locator('#project-file').set_input_files(payload(json.dumps(s)));p.get_by_role('button',name='Confirm',exact=True).click();p.locator('#view-3d').click();p.wait_for_function("plannerTest.mode()==='3d'")
+            p.locator('#project-file').set_input_files(payload(json.dumps(s)));p.get_by_role('button',name='Confirm',exact=True).click();p.locator('#view-3d').click();p.wait_for_function("()=>plannerTest.mode()==='3d'")
             timing=p.evaluate("()=>new Promise(resolve=>{let frames=[],start=performance.now(),last=start;function tick(t){frames.push(t-last);last=t;if(t-start<2000)requestAnimationFrame(tick);else resolve({frames:frames.length,seconds:(t-start)/1000,over33ms:frames.filter(v=>v>33.34).length})}requestAnimationFrame(tick)})")
-            PERF.update(timing);PERF['mean_fps']=round(timing['frames']/timing['seconds'],1);PERF['note']='Headless Linux software-rendering observation; not real-device certification or a guaranteed FPS.'
+            PERF.update(timing);PERF['mean_fps']=round(timing['frames']/timing['seconds'],1);PERF['note']='Headless software-rendering observation; not real-device certification or a guaranteed FPS.'
     run('50-wall / 50-item / 2048 px image load and observed 3D frame timing',test_performance)
+
+    def close_localized_dialog(p):p.locator('#modal .icon-button').click()
+    def switch_language(p,code):
+        p.locator('#language').select_option(code)
+        expect(p.locator('html')).to_have_attribute('lang',code)
+        assert 'test=1' in p.url and p.url.endswith('#layout')
+    def assert_fits(p,selector):
+        bad=p.locator(selector).evaluate_all("nodes=>nodes.filter(e=>e.getClientRects().length&&!e.closest('[hidden]')).filter(e=>{const r=e.getBoundingClientRect();return r.left<-.5||r.right>innerWidth+.5||r.width<43.9||r.height<43.9}).map(e=>({id:e.id,text:e.textContent,rect:e.getBoundingClientRect().toJSON()}))")
+        assert not bad,bad
+        assert p.evaluate('document.documentElement.scrollWidth <= innerWidth')
+    def test_locale_desktop(code):
+        with page(locale=code,init=CANVAS_LOG) as (p,e,r):
+            expect(p.locator('#modal-title')).to_have_text(text(code,'ui.your_space_your_layout'))
+            assert p.locator('#welcome-language option').count()==6
+            p.get_by_role('button',name=text(code,'ui.try_an_example'),exact=True).click()
+            expect(p.locator('#project-name')).to_have_text(text(code,'name.example'))
+            assert p.locator('#language option').count()==6
+            assert p.locator('#plan-canvas').get_attribute('aria-label')==text(code,'ui.editable_room_plan_use_the_library_to_add')
+            p.locator('#help').click();assert p.locator('.help-copy h3').count()==8
+            expect(p.locator('.help-copy')).to_contain_text(text(code,'ui.geometry_autosaves_locally_background_images_are_session_only'))
+            close_localized_dialog(p)
+            p.locator('#object-list .object-row').first.click()
+            before=snapshot(p);history_before=p.evaluate('plannerTest.history()')
+            decimal='2,25' if code in ['de','fr','es'] else '2.25'
+            p.locator('#field-width-m').fill(decimal);p.locator('#field-name').fill('我的家具 <b>')
+            p.evaluate('window.draftInput=document.querySelector("#field-width-m")')
+            target=LOCALES[(LOCALES.index(code)+1)%6];switch_language(p,target)
+            expect(p.locator('#field-width-m')).to_have_value(decimal);expect(p.locator('#field-name')).to_have_value('我的家具 <b>')
+            assert p.evaluate('window.draftInput===document.querySelector("#field-width-m")')
+            assert snapshot(p)==before and p.evaluate('plannerTest.history()')==history_before
+            assert p.locator('#object-list .object-row').first.get_attribute('aria-pressed')=='true'
+            switch_language(p,code);p.locator('#apply-properties').click()
+            item=snapshot(p)['furniture'][0];assert item['width']==2.25 and item['name']=='我的家具 <b>' and 'nameKey' not in item
+            assert p.locator('#inspector-title b').count()==0
+            p.locator('#undo').click();assert snapshot(p)['furniture']==before['furniture']
+            p.locator('#redo').click();assert snapshot(p)['furniture'][0]['name']=='我的家具 <b>'
+            p.locator('#object-list .object-row').first.click()
+            before_invalid=snapshot(p);p.locator('#field-width-m').fill('-1');p.locator('#apply-properties').click()
+            expect(p.locator('#inspector [role=alert]')).to_contain_text(text(code,'ui.width'));assert snapshot(p)==before_invalid
+            p.locator('#field-width-m').fill('2.25')
+            old=geometry(p);p.locator('#units').select_option('imperial');assert geometry(p)==old
+            assert 'ft' in p.locator('#presets small').first.inner_text()
+            assert p.locator('#field-width-ft').get_attribute('aria-label')==text(code,'field.feet',label=text(code,'ui.width'))
+            p.locator('#apply-properties').click();assert geometry(p)==old
+            p.locator('#units').select_option('metric')
+            p.locator('#export-project').click()
+            with p.expect_download() as info:p.get_by_role('button',name=text(code,'ui.download_json'),exact=True).click()
+            raw=json.loads(pathlib.Path(info.value.path()).read_bytes());assert raw['furniture']==snapshot(p)['furniture'] and raw['nameKey']=='name.example'
+            p.evaluate('window.canvasLabels=[]')
+            with p.expect_download() as info:p.get_by_role('button',name=text(code,'ui.download_png'),exact=True).click()
+            data=pathlib.Path(info.value.path()).read_bytes();assert data[:8]==b'\x89PNG\r\n\x1a\n'
+            labels=p.evaluate('window.canvasLabels');assert text(code,'ui.planning_only_verify_on_site') in labels
+            assert text(code,'name.example') in labels and '我的家具 <b>' in labels
+            (OUT/f'locale-{code}-export.png').write_bytes(data)
+            close_localized_dialog(p)
+            p.locator('#project-file').set_input_files(payload(json.dumps(raw)))
+            p.get_by_role('button',name=text(code,'ui.confirm'),exact=True).click();assert snapshot(p)['furniture']==raw['furniture']
+            p.locator('#view-3d').click();p.wait_for_function("()=>plannerTest.mode()==='3d'")
+            assert p.locator('#three-host canvas').get_attribute('aria-label')==text(code,'ui.3d_view_of_the_current_layout')
+            p.locator('#view-2d').click();assert snapshot(p)['furniture']==raw['furniture']
+            p.locator('#toast').evaluate('(e)=>e.hidden=true');p.screenshot(path=str(OUT/f'locale-{code}-desktop.png'))
+            p.wait_for_timeout(650);p.reload();p.wait_for_function('()=>window.plannerTest !== undefined')
+            expect(p.locator('html')).to_have_attribute('lang',code);assert snapshot(p)['furniture']==raw['furniture']
+            assert not e,e;assert all(req.startswith(URL.split('?')[0]) for req in r)
+    def test_locale_phone(code):
+        with page(mobile=True,locale=code) as (p,e,r):
+            p.get_by_role('button',name=text(code,'ui.try_an_example'),exact=True).tap()
+            assert_fits(p,'.app-header button,.app-header select,.view-switch button,.tool-rail button,.mobile-nav button')
+            assert p.evaluate("()=>{const s=document.querySelector('.header-status').getBoundingClientRect(),a=document.querySelector('.header-actions').getBoundingClientRect();return s.bottom<=a.top+.5}")
+            p.locator('[data-panel=library]').tap();assert_fits(p,'#library-panel button')
+            p.get_by_role('button',name=text(code,'object.add',name=text(code,'name.desk')),exact=True).tap()
+            p.locator('[data-panel=inspector]').tap();p.locator('#field-width-m').fill('1,6');p.locator('#apply-properties').tap()
+            assert snapshot(p)['furniture'][-1]['width']==1.6
+            assert_fits(p,'#inspector-panel button')
+            p.locator('#units').select_option('imperial');p.locator('#field-width-ft').fill('5');p.locator('#field-width-in').fill('3');p.locator('#apply-properties').tap()
+            assert math.isclose(snapshot(p)['furniture'][-1]['width'],1.6002)
+            p.get_by_role('button',name=text(code,'ui.close_details'),exact=True).tap()
+            before=geometry(p);p.locator('#view-3d').tap();p.wait_for_function("()=>plannerTest.mode()==='3d'")
+            assert_fits(p,'#three-options button');assert_fits(p,'#three-options label')
+            p.locator('#walk').tap();expect(p.locator('#walk-controls')).to_be_visible()
+            p.locator('#view-2d').tap();assert geometry(p)==before
+            p.locator('#fit-view').tap();p.locator('#toast').evaluate('(e)=>e.hidden=true');p.screenshot(path=str(OUT/f'locale-{code}-mobile.png'));assert not e,e
+    for code in LOCALES:
+        run(f'{code}: desktop draft, history, names, error, units, JSON, PNG, 3D and refresh',lambda code=code:test_locale_desktop(code))
+        run(f'{code}: 390 px touch, panel buttons, numeric inputs and 3D layout',lambda code=code:test_locale_phone(code))
+    def test_language_failure():
+        with page() as (p,e,r):
+            example(p);choose_sofa(p);p.locator('#field-name').fill('Unsubmitted name');before=snapshot(p)
+            p.route('**/src/locales/fr.js',lambda route:route.abort());p.locator('#language').select_option('fr')
+            expect(p.locator('#toast')).to_have_text(text('en','language.error'));expect(p.locator('html')).to_have_attribute('lang','en')
+            expect(p.locator('#field-name')).to_have_value('Unsubmitted name');assert snapshot(p)==before
+            switch_language(p,'ja');assert snapshot(p)==before;expect(p.locator('#field-name')).to_have_value('Unsubmitted name')
+    run('Failed language module preserves draft and project; another language still works',test_language_failure)
+    def test_language_storage_denied():
+        with page(locale='ja',init="Object.defineProperty(window,'localStorage',{get(){throw new DOMException('Blocked','SecurityError')}})") as (p,e,r):
+            p.locator('#new-project').click();p.get_by_role('button',name=text('ja','ui.try_an_example'),exact=True).click();p.wait_for_timeout(650)
+            expect(p.locator('#save-status')).to_have_text(text('ja','ui.not_saved_export_json'))
+            before=snapshot(p);switch_language(p,'fr');assert snapshot(p)==before
+            expect(p.locator('#notice')).to_have_text(text('fr','ui.not_saved_browser_storage_is_unavailable_or_full'));assert not e,e
+    run('Denied language/project storage remains usable and translates failure messages',test_language_storage_denied)
+    def test_language_fallback():
+        with page(locale='de',block_vendor=True) as (p,e,r):
+            p.get_by_role('button',name=text('de','ui.try_an_example'),exact=True).click();before=snapshot(p)
+            p.locator('#view-3d').click();expect(p.locator('#notice')).to_have_text(text('de','ui.3d_is_unavailable_webgl2_or_the_local_three'));assert snapshot(p)==before
+            switch_language(p,'es');expect(p.locator('#notice')).to_have_text(text('es','ui.3d_is_unavailable_webgl2_or_the_local_three'))
+    run('3D dependency failure and its message survive a language switch',test_language_fallback)
+    def test_legacy_language():
+        with page(locale='zh-TW') as (p,e,r):
+            p.get_by_role('button',name=text('zh-TW','ui.try_an_example'),exact=True).click();legacy=snapshot(p)
+            del legacy['nameKey']
+            for item in legacy['furniture']:del item['nameKey']
+            p.locator('#project-file').set_input_files(payload(json.dumps(legacy)));p.get_by_role('button',name=text('zh-TW','ui.confirm'),exact=True).click()
+            expect(p.locator('#project-name')).to_have_text('Living + working');p.locator('#object-list .object-row').first.click();expect(p.locator('#field-name')).to_have_value('Sofa')
+            switch_language(p,'ja');expect(p.locator('#field-name')).to_have_value('Sofa');assert snapshot(p)==legacy
+            p.locator('#apply-properties').click();assert snapshot(p)==legacy
+    run('Legacy English names stay literal across languages and unchanged property submission',test_legacy_language)
+    def test_published_subpath():
+        with page(locale='ja',prefix='site') as (p,e,r):
+            p.get_by_role('button',name=text('ja','ui.try_an_example'),exact=True).click();before=snapshot(p)
+            switch_language(p,'en');assert '/site/?test=1#layout' in p.url and snapshot(p)==before
+            assert p.locator('.brand').get_attribute('href')==URL.split('?')[0]+'site/'
+            switch_language(p,'fr');assert '/site/fr/?test=1#layout' in p.url and snapshot(p)==before
+            p.reload();p.wait_for_function('()=>window.plannerTest !== undefined');expect(p.locator('html')).to_have_attribute('lang','fr')
+            assert not e,e;assert all('/site/' in req for req in r),[req for req in r if '/site/' not in req]
+    run('Packaged static site preserves language paths and assets under a subdirectory',test_published_subpath)
     browser.close()
 server.shutdown()
-report={'browser':f'Chromium {browser_version}','platform':'Linux headless','desktop_viewport':'1366 × 900','mobile_viewport':'390 × 844 (emulated, not real device)','passed':sum(r['status']=='passed' for r in RESULTS),'failed':sum(r['status']=='failed' for r in RESULTS),'cases':RESULTS,'performance':PERF,'not_tested':['current stable Chrome/Edge/Firefox/macOS Safari','real iOS Safari / Android Chrome devices','physical-device frame rate','external GitHub deployment']}
+report={'browser':f'Chromium {browser_version}','platform':f'{sys.platform} headless','desktop_viewport':'1366 × 900','mobile_viewport':'390 × 844 (emulated, not real device)','passed':sum(r['status']=='passed' for r in RESULTS),'failed':sum(r['status']=='failed' for r in RESULTS),'cases':RESULTS,'performance':PERF,'not_tested':['current stable Chrome/Edge/Firefox/macOS Safari','real iOS Safari / Android Chrome devices','physical-device frame rate','external GitHub deployment']}
 (OUT/'browser-results.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n')
 print(json.dumps({k:v for k,v in report.items() if k!='cases'},indent=2,ensure_ascii=False))
 sys.exit(1 if report['failed'] else 0)

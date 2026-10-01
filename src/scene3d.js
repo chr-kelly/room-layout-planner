@@ -1,3 +1,5 @@
+import { message } from './messages.js';
+import { bindAttribute } from './i18n.js';
 import * as THREE from '../vendor/three/three.module.min.js';
 import { OrbitControls } from '../vendor/three/OrbitControls.js';
 import { projectBounds, distance } from './model.js';
@@ -11,9 +13,9 @@ export class SceneView {
     this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
     this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFSoftShadowMap;
     this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.3;
-    this.renderer.domElement.setAttribute('aria-label','3D view of the current layout');this.renderer.domElement.tabIndex=0;
+    bindAttribute(this.renderer.domElement,'aria-label',message('ui.3d_view_of_the_current_layout'));this.renderer.domElement.tabIndex=0;
     host.append(this.renderer.domElement);
-    this.renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();this.hide();onFailure('The graphics context was lost. Reload to retry 3D. Your 2D project is still available.');});
+    this.renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();this.hide();onFailure(message('ui.the_graphics_context_was_lost_reload_to_retry'));});
     this.controls=new OrbitControls(this.camera,this.renderer.domElement);this.controls.enableDamping=true;this.controls.dampingFactor=.08;this.controls.maxPolarAngle=Math.PI*.49;this.controls.minDistance=.4;this.controls.maxDistance=1500;
     this.scene.add(new THREE.HemisphereLight('#ffffff','#a6ad9a',3));
     this.sun=new THREE.DirectionalLight('#fff7e3',4);this.sun.position.set(4,10,6);this.sun.castShadow=true;this.sun.shadow.mapSize.set(1024,1024);this.sun.shadow.normalBias=.035;this.scene.add(this.sun);this.scene.add(this.sun.target);

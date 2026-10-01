@@ -5,3 +5,26 @@
 
 /* Keep every actionable button touch-friendly, including view and rename controls. */
 .view-switch button,.project-name{min-height:44px}
+
+/* One language menu; longer labels use the same compact editor layout. */
+.language-control select{min-height:44px;width:125px;border:1px solid var(--line);border-radius:9px;background:#fffefb;color:var(--ink);font-size:12px;padding:9px 8px;cursor:pointer}
+.language-suggestion{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);margin:10px 0}
+.brand small{letter-spacing:1px;max-width:280px;white-space:normal;line-height:1.4}
+.workspace-top>div:first-child{min-width:0;flex:1}
+.project-name{max-width:100%;width:auto}
+.section-heading h2{min-width:0}
+.section-heading .muted{flex-shrink:0}
+.room-button span[data-i18n]{font-size:13px}
+.preset-grid>*{min-width:0}
+.preset-card strong{overflow-wrap:anywhere}
+.form-field label,.modal-top h2,.inspector-heading h2{overflow-wrap:anywhere}
+.object-row .object-name{min-width:0}
+.object-row .object-size{flex-shrink:0}
+.three-options{max-width:calc(100% - 20px);white-space:normal}
+.three-options button{white-space:normal}
+.three-options .check-label{white-space:normal;line-height:1.3}
+.check-label span[data-i18n]{white-space:normal;line-height:1.3}
+@media(max-width:1050px) and (min-width:801px){.app-header{gap:10px}.brand{font-size:21px}.brand small{max-width:205px}.header-status{max-width:155px;line-height:1.4}.language-control select{width:112px}.header-actions{gap:5px}.header-actions button{padding:8px 10px}.header-actions .primary{min-width:85px}}
+@media(max-width:800px){.app-header{height:128px;position:relative;grid-template-rows:44px 44px;row-gap:14px}.language-control{grid-column:2;grid-row:1}.language-control select{width:128px}.header-status{position:absolute;top:59px;left:14px;right:14px;max-width:none;justify-content:start;white-space:nowrap;font-size:9px;line-height:12px}.header-status>span:last-child{overflow:hidden;text-overflow:ellipsis}.header-actions{grid-row:2}.app-layout{height:calc(100dvh - 184px)}.workspace-top{gap:6px}.view-switch button{padding:6px 8px}.view-switch{max-width:53%}.project-name{font-size:17px}.workspace-footer>span{min-width:0}.workspace-footer .check-label{max-width:85px;white-space:normal}.tool-rail button{min-width:44px;flex:1;padding:5px 4px}.tool-rail button small{max-width:66px;overflow-wrap:anywhere}.three-options{width:max-content}.three-options>*{min-width:0;flex:1}.three-options button{max-width:108px}.walk-controls{max-width:calc(100% - 28px)}.walk-controls p{max-width:195px}.modal-actions button{overflow-wrap:anywhere}.language-suggestion{align-items:start}}
+@media(max-width:800px){.header-status{grid-area:auto}.tool-rail{width:calc(100% - 32px);max-width:350px}.tool-rail button small{white-space:nowrap;overflow-wrap:normal;max-width:none}}
+.three-options .check-label{min-width:44px}

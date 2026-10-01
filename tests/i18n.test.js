@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
 import { LOCALES, setLocale, getLocale, t, formatNumber, localePath, readPreference, writePreference, displayName } from '../src/i18n.js';
 import en from '../src/locales/en.js';
-import { blankProject, exampleProject, validateProject, clone } from '../src/model.js';
+import { exampleProject, validateProject, clone, number } from '../src/model.js';
+import { message } from '../src/messages.js';
 
 test('six published languages have complete text and matching interpolation variables', async () => {
   assert.deepEqual(LOCALES.map(l => l.code), ['en','zh-TW','ja','de','fr','es']);
@@ -64,4 +64,19 @@ test('only explicit default-name metadata is translated and old/custom names rou
   assert.deepEqual(validateProject(old),old);
   assert.deepEqual(validateProject(tagged),tagged);
   await setLocale('en');
+});
+
+test('renamed or forged default-name markers are ignored without changing user text', async () => {
+  const p=exampleProject();p.name='My plan';p.furniture[0].name='My sofa';p.furniture[1].nameKey='ui.confirm';
+  const clean=validateProject(p);
+  assert.equal(clean.name,'My plan');assert.equal(clean.nameKey,undefined);
+  assert.equal(clean.furniture[0].name,'My sofa');assert.equal(clean.furniture[0].nameKey,undefined);
+  assert.equal(clean.furniture[1].nameKey,undefined);
+  await setLocale('ja');assert.equal(displayName({name:'私の家具',nameKey:99}),'私の家具');await setLocale('en');
+});
+
+test('core validation retains its English message and exposes structured translated parameters', async () => {
+  let error;try{number(-1,message('ui.width'),.01,100);}catch(e){error=e;}
+  assert.equal(error.code,'error.numberRange');assert.equal(error.message,'Width must be a finite number between 0.01 and 100.');
+  await setLocale('fr');assert.equal(t(error.code,error.params),'Largeur doit être un nombre fini entre 0,01 et 100.');await setLocale('en');
 });

@@ -1,6 +1,14 @@
-import { distance, formatLength, containsFurniture, segmentDistance, projectBounds } from './model.js';
+import { distance, containsFurniture, segmentDistance, projectBounds } from './model.js';
+import { formatLength, displayName, t, getLocale } from './i18n.js';
+import { PlannerError } from './messages.js';
 
 function roundedRect(ctx,x,y,w,h,r=0.05) {ctx.beginPath();ctx.roundRect(x,y,w,h,Math.min(r,w/4,h/4));}
+function fittedText(ctx,text,width) {const letters=[...text];while(letters.length&&ctx.measureText(letters.join('')+(letters.length<[...text].length?'…':'')).width>width)letters.pop();return letters.join('')+(letters.length<[...text].length?'…':'');}
+function wrappedText(ctx,text,x,y,width,lineHeight) {
+  const words=new Intl.Segmenter(getLocale(),{granularity:'word'}).segment(text);let line='',lines=0;
+  for(const {segment} of words){if(line&&ctx.measureText(line+segment).width>width){ctx.fillText(line.trim(),x,y+lines*lineHeight);lines++;line='';}for(const char of segment){if(line&&ctx.measureText(line+char).width>width){ctx.fillText(line.trim(),x,y+lines*lineHeight);lines++;line='';}line+=char;}}
+  if(line.trim()){ctx.fillText(line.trim(),x,y+lines*lineHeight);lines++;}return lines;
+}
 export class PlanView {
   constructor(canvas,getProject,getImage) {
     this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getProject=getProject;this.getImage=getImage;
@@ -78,9 +86,9 @@ export class PlanView {
       } else if(f.type==='chair') {roundedRect(ctx,-f.width*.37,-f.depth*.2,f.width*.74,f.depth*.55);ctx.stroke();}
       ctx.restore();
       const labelPoint={x:f.x,y:f.y+(f.type==='chair'?0:.02)};
-      const label=f.name.length>22?`${f.name.slice(0,21)}…`:f.name;
-      this.label(ctx,label,labelPoint,textSize,'#343b36',false);
-      if(Math.min(f.width,f.depth)*scale>65)this.label(ctx,`${formatLength(f.width,p.units)} × ${formatLength(f.depth,p.units)}`,{x:f.x,y:f.y+textSize*1.7},textSize*.82,'#454b43',false);
+      const angle=f.rotation*Math.PI/180,labelWidth=Math.abs(Math.cos(angle))*f.width+Math.abs(Math.sin(angle))*f.depth;
+      this.label(ctx,displayName(f),labelPoint,textSize,'#343b36',false,labelWidth*.88);
+      if(Math.min(f.width,f.depth)*scale>65)this.label(ctx,`${formatLength(f.width,p.units)} × ${formatLength(f.depth,p.units)}`,{x:f.x,y:f.y+textSize*1.7},textSize*.82,'#454b43',false,labelWidth*.9);
       if(selected) {
         ctx.save();ctx.translate(f.x,f.y);ctx.rotate(f.rotation*Math.PI/180);ctx.setLineDash([4/scale,3/scale]);ctx.strokeStyle='#ad573e';ctx.lineWidth=1/scale;ctx.strokeRect(-f.width/2-.05,-f.depth/2-.05,f.width+.1,f.depth+.1);ctx.restore();
       }
@@ -94,12 +102,13 @@ export class PlanView {
     }
     ctx.restore();
     if(!p.walls.length&&!p.furniture.length&&!bg&&!exporting) {
-      ctx.fillStyle='#666f67';ctx.font='600 18px system-ui, sans-serif';ctx.textAlign='center';ctx.fillText('A little planning. A better fit.',width/2,height/2-12);
-      ctx.font='13px system-ui, sans-serif';ctx.fillText('Import a plan or create a simple room to begin.',width/2,height/2+16);
+      ctx.fillStyle='#666f67';ctx.font='600 18px system-ui, sans-serif';ctx.textAlign='center';const lines=wrappedText(ctx,t('canvas.emptyTitle'),width/2,height/2-28,width-48,25);
+      ctx.font='13px system-ui, sans-serif';wrappedText(ctx,t('canvas.emptyHint'),width/2,height/2-16+lines*25,width-48,20);
     }
   }
-  label(ctx,text,point,size,color,background=true) {
+  label(ctx,text,point,size,color,background=true,maxWidth=Infinity) {
     ctx.save();ctx.font=`500 ${size}px system-ui, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    if(Number.isFinite(maxWidth))text=fittedText(ctx,text,maxWidth);
     if(background){const w=ctx.measureText(text).width;ctx.fillStyle='#f8f7f3ed';ctx.fillRect(point.x-w/2-size*.4,point.y-size*.7,w+size*.8,size*1.4);}
     ctx.fillStyle=color;ctx.fillText(text,point.x,point.y);ctx.restore();
   }
@@ -111,11 +120,11 @@ export class PlanView {
   async png(includeBackground=true) {
     const p=this.getProject(),b=projectBounds(p,includeBackground), canvas=document.createElement('canvas');
     const pad=100, scale=Math.min(1800/b.width,1300/b.height);canvas.width=Math.ceil(b.width*scale+pad*2);canvas.height=Math.ceil(b.height*scale+pad*2+110);
-    const ctx=canvas.getContext('2d');if(!ctx)throw new Error('PNG export is unavailable.');
+    const ctx=canvas.getContext('2d');if(!ctx)throw new PlannerError('png.unavailable');
     this.draw(ctx,canvas.width,canvas.height,scale,{x:pad-b.x*scale,y:pad+45-b.y*scale},{exporting:true,background:includeBackground});
-    ctx.fillStyle='#303a32';ctx.font='600 28px system-ui, sans-serif';ctx.textAlign='left';ctx.fillText(p.name,48,50,canvas.width-96);
-    ctx.font='16px system-ui, sans-serif';ctx.fillStyle='#657062';ctx.fillText(`2D layout · ${p.units==='metric'?'Metric':'Feet & inches'} · Wall labels: centreline (CL)`,48,78);
-    ctx.fillStyle='#566153';ctx.font='18px system-ui, sans-serif';ctx.fillText('Planning only · Verify on site',48,canvas.height-45);
-    return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Could not create a PNG.')),'image/png'));
+    ctx.fillStyle='#303a32';ctx.font='600 28px system-ui, sans-serif';ctx.textAlign='left';ctx.fillText(displayName(p),48,50,canvas.width-96);
+    ctx.font='16px system-ui, sans-serif';ctx.fillStyle='#657062';ctx.fillText(t('png.heading',{units:t(`units.${p.units}`)}),48,78,canvas.width-96);
+    ctx.fillStyle='#566153';ctx.font='18px system-ui, sans-serif';ctx.fillText(t('ui.planning_only_verify_on_site'),48,canvas.height-45,canvas.width-96);
+    return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new PlannerError('png.failed')),'image/png'));
   }
 }

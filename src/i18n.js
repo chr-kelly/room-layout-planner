@@ -19,12 +19,14 @@ const loaders = {
   es: () => import('./locales/es.js')
 };
 const preferenceKey = 'room-layout-planner.ui.language.v1';
-const listeners = new Set(), bindings = new Map();
+const listeners = new Set(), bindings = new Map(), numberFormats = new Map();
 let locale = 'en', dictionary = en, request = 0;
 export const getLocale = () => locale;
 export const basePath = new URL('../', import.meta.url).pathname;
 export function formatNumber(number, precision = 3) {
-  return new Intl.NumberFormat(locale, { useGrouping: false, maximumFractionDigits: precision }).format(number);
+  const key=`${locale}:${precision}`;
+  if(!numberFormats.has(key))numberFormats.set(key,new Intl.NumberFormat(locale, { useGrouping: false, maximumFractionDigits: precision }));
+  return numberFormats.get(key).format(number);
 }
 export function t(key, params = {}) {
   return (dictionary[key] ?? en[key] ?? key).replace(/\{(\w+)\}/g, (_, name) => {
@@ -75,6 +77,12 @@ function updateLocation() {
   if (location.pathname !== path) history.replaceState(null, '', path + location.search + location.hash);
 }
 export async function initializeLocale() {
+  // replaceState changes the document base URL. Freeze relative navigation/assets
+  // before changing paths so icons, styles and the home link keep their real base.
+  for(const node of document.querySelectorAll('link[href],a.brand[href]')){
+    const url=new URL(node.getAttribute('href'),location.href);
+    if(url.origin===location.origin)node.setAttribute('href',url.href);
+  }
   const pathCode = location.pathname.slice(basePath.length).split('/')[0];
   const explicit = pathCode && Object.hasOwn(loaders, pathCode);
   const code = explicit ? pathCode : readPreference() || 'en';
@@ -104,7 +112,7 @@ function remember(node, property, value) {
 }
 export const bindText = (node, value) => remember(node, 'text', value);
 export const bindAttribute = (node, attribute, value) => remember(node, attribute, value);
-function refreshBindings() {
+export function refreshBindings() {
   for (const [node, values] of bindings) {
     if (!node.isConnected) { bindings.delete(node); continue; }
     for (const [property, value] of values) {
@@ -113,6 +121,7 @@ function refreshBindings() {
     }
   }
 }
+export function pruneBindings() {for(const node of bindings.keys())if(!node.isConnected)bindings.delete(node);}
 export function translateDOM(root = document) {
   for (const node of root.querySelectorAll('[data-i18n]')) bindText(node, message(node.dataset.i18n));
   for (const attribute of ['aria-label', 'title', 'content']) {
@@ -120,7 +129,7 @@ export function translateDOM(root = document) {
   }
 }
 export function nameMessage(item) {
-  return item?.nameKey?.startsWith('name.') && Object.hasOwn(en, item.nameKey) && item.name === en[item.nameKey]
+  return typeof item?.nameKey==='string' && item.nameKey.startsWith('name.') && Object.hasOwn(en, item.nameKey) && item.name === en[item.nameKey]
     ? message(item.nameKey) : item?.name ?? '';
 }
 export const displayName = item => resolve(nameMessage(item));
