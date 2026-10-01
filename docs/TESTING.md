@@ -1,74 +1,98 @@
-# Test record — 0.1.0 development preview
+# Test record — 0.1.0, six-language local preview
 
-Recorded 2026-10-01. This record distinguishes execution from authored coverage.
-**This is not a completed P0 browser-acceptance sign-off.**
+Recorded 2026-10-02. This replaces the earlier 2026-10-01 container record with
+an actual completed local run. Local automation and real-device acceptance are
+recorded separately; the original PRD's real-device sign-off remains open.
 
-## Executed successfully
+## Completed local run
 
-Environment: Linux working container; Node.js v22.16.0; Python 3.13.5.
+Environment: macOS arm64; Node.js v22.17.0; Python 3.9.6; Playwright 1.57.0;
+official Playwright Chromium 143.0.7499.4 (full Chrome for Testing, headless).
+Desktop viewport: 1366 × 900. Touch viewport: 390 × 844, emulated.
 
 | Check | Actual result |
 |---|---|
-| `node --test tests/*.test.js` | 55 passed; 0 failed; 0 skipped |
-| `node --check` on all 6 application JavaScript modules | Passed syntax checks |
-| Python compile checks for vendor utility and browser suite | Passed |
-| Included example JSON through the application validator | Passed |
-| Upstream Three.js LICENSE SHA-256 | Matches pinned upstream digest |
+| `node --test tests/*.test.js` | 64 passed; 0 failed; 0 skipped; exit 0 |
+| `python tests/browser_test.py` with `CHROMIUM_PATH` | 39 passed; 0 failed; exit 0 |
+| JavaScript syntax checks | All 15 app, locale and build modules passed |
+| Python compile checks | Vendor, packaging and browser-test scripts passed |
+| `python3 scripts/vendor.py --check` | All four pinned files verified |
+| `python3 scripts/package.py` | 30 app-only files; six language entries; no docs, tests, environment or Git data |
+| README local file references | 39 references across two files passed; six tables, six image uses and six details elements |
+| Rendered English and Chinese README | Each: 3 / 3 images loaded; three tables; three details elements; no horizontal overflow |
 
-The complete Node TAP output is stored in `unit-results.tap`. Unit tests cover
-metre/foot/inch conversion, unchanged geometry across unit settings, clear-inside
-rectangle geometry, 3–4–5 distance, rotation/hit tests, calibration, history limits
-and redo branching, version and schema rejection, unique IDs, finite/ranged values,
-image headers and limits, storage failure, and application-specific cache clearing.
-Passing these tests does **not** prove mouse/touch UX, exported rendering, GPU
-behavior, or browser security behavior.
+Full Node TAP output is in [unit-results.tap](unit-results.tap). The completed
+browser report, including every case, is in [browser-results.json](browser-results.json).
+Screenshots and the test downloads remain in the ignored `test-results/` folder.
+Current real example screenshots are included in `assets/readme/`.
 
-## Authored, but not executed to completion
+## Coverage and corrections
 
-`tests/browser_test.py` contains 22 end-to-end scenarios targeting desktop
-1366 × 900 and emulated touch 390 × 844. These include editing/dragging, unit
-switching, calibration, image rejection, PNG/JSON downloads, refresh/recovery,
-confirmation cancellation, storage denied, unavailable WebGL/missing dependency,
-3D size consistency/walk controls, XSS text handling, re-alignment, and a 50-wall /
-50-furniture scene with a 2048-pixel image.
+All original **55 unit tests and 22 browser scenarios** remain and passed.
+Nine additional unit tests cover six matching language catalogues (333 keys each),
+message parameters, path handling, independent language storage, decimal commas,
+legacy names, whitelisted default-name metadata, structured errors and six
+static HTML entries with real relative assets and translated metadata.
 
-**No browser pass count, UI screenshot, or FPS result is claimed.** Local automated
-navigation was blocked by the execution environment's browser policy. Preparation
-of an alternate test environment was also interrupted by a tool security block.
-No policy bypass was attempted. These restrictions are not evidence that the
-application passes or fails those browser scenarios.
+Seventeen additional browser scenarios cover a desktop and touch workflow for
+each language, plus a failed language-module load, denied storage, 3D dependency
+failure across a language switch, literal legacy names and the packaged site
+under a subdirectory. They check retained input nodes and unsubmitted values,
+selection/history and geometry, localized help/errors/ARIA, metric/imperial
+fields, JSON round trips, actual PNG drawing text, 3D and reload behavior.
 
-Runtime Three.js files were fetched and their hashes inspected in a separate
-environment, but were not successfully incorporated into this source archive.
-The local dependency-fetch utility therefore still needs to be run in the target
-environment; its complete download/install path is not reported as locally passed.
+The suite produced **18 language-specific PNG artifacts**: six desktop screenshots,
+six touch screenshots and six exported plans, alongside the original screenshots.
+All 12 language desktop/touch screenshots were visually inspected. This is a
+layout review, not independent native-language copy review. The real English
+2D/3D and Traditional Chinese examples were also inspected in the in-app browser.
 
-## Reproduce locally
+Actual failures were repaired before the final passing run. Calibration clicks
+are rounded to image pixels so the original 400 px / 4 m precision assertion
+passes; legacy fractional JSON calibration remains supported. Dynamic text
+bindings no longer clear compound preset buttons. Language URL changes stabilize
+same-origin links before changing the relative base. A 3D checkbox now meets the
+existing 44 px touch-target requirement. The original 3D wait was made CSP-safe
+by passing a function with the same condition; `unsafe-eval` was not enabled.
+No original assertion was loosened, and no test was deleted or skipped.
+
+## Performance observation
+
+The existing 50-wall / 50-item / 2048 px image case observed 122 animation frames
+in 2.0038 seconds (60.9 mean FPS; no interval over 33.34 ms) in headless software
+rendering. This is one local observation, not a guaranteed frame rate or the
+PRD's 30-FPS real-device certification. GPU, browser and hardware results can differ.
+
+## Reproduce
 
 ```sh
-python3 scripts/vendor.py
-python3 scripts/vendor.py --check
+python3 scripts/package.py --fetch-vendor
 node --test tests/*.test.js
-python3 -m pip install -r requirements-test.txt
-python3 -m playwright install chromium
-python3 tests/browser_test.py
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-test.txt
+.venv/bin/python -m playwright install chromium
+.venv/bin/python tests/browser_test.py
 ```
 
-Use a supported desktop environment without the execution restrictions above.
-On Linux, Playwright may additionally need system libraries; its standard
-`python3 -m playwright install --with-deps chromium` command installs those in a
-suitable test environment. The suite serves the project locally and writes its
-actual JSON report and screenshots to `test-results/`.
+The packaging step requires Node 20+ and Python 3 and prepares `site/`, which is
+used by the subdirectory browser scenario. Dependency downloads use official
+pinned upstream files and verify SHA-256. The browser suite manages its own local
+HTTP server and writes a JSON report, screenshots and downloads to `test-results/`.
+`CHROMIUM_PATH` can select an installed Chromium. This completed macOS run used
+the full Chrome for Testing binary from Playwright's `chromium-1200` installation.
+On Linux, Playwright may need its documented `install --with-deps chromium` setup.
 
-## Release gates still open
+## Gates still open
 
-Real-device iOS Safari and Android Chrome; current stable desktop Chrome, Edge,
-Firefox and macOS Safari; keyboard and touch accessibility; screen-reader review;
-actual GPU/WebGL behavior; full offline-package request inspection; storage and
-export behavior in those browsers; visual review of screenshots; performance on
-a named reference device; external-user usability validation.
+Real iOS Safari and Android Chrome devices; current stable desktop Chrome, Edge,
+Firefox and macOS Safari; screen-reader review; actual GPU/WebGL behavior;
+performance on a named physical device; external-user usability validation;
+independent native-language review of all six catalogues.
 
-The 30-FPS performance target in the PRD is **not measured or certified** here.
-GitHub Actions have **not run**, no remote repository has been created for this
-project, and no Pages site has been deployed by this delivery. Workflow YAML files
-are configuration only, not proof of successful CI or hosting.
+Claude independent review and a Claude Design canvas were unavailable because
+the local Claude account was restricted. This work used the existing product
+layout; it does not claim a Claude review or a new Design prototype.
+
+GitHub Actions have not run. The repository exists locally with no remote;
+no public GitHub repository or Cloudflare Pages site has been published.
+Workflow files and local screenshots do not establish online deployment success.

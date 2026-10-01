@@ -1,31 +1,68 @@
 {
   "version": "0.1.0",
-  "distribution": "source-only",
-  "release_status": "development-preview",
-  "recorded_date": "2026-10-01",
-  "runtime_vendor_files_bundled": false,
+  "distribution": "source-with-verified-local-vendor-and-static-package",
+  "release_status": "locally-verified-development-preview",
+  "recorded_date": "2026-10-02",
+  "languages": ["en", "zh-TW", "ja", "de", "fr", "es"],
+  "english_path": "/",
+  "runtime_vendor_files_bundled": true,
   "vendor_setup_command": "python3 scripts/vendor.py",
+  "static_package_command": "python3 scripts/package.py --fetch-vendor",
+  "static_package": {
+    "prepared": true,
+    "directory": "site",
+    "app_file_count": 30,
+    "language_entry_count": 6
+  },
+  "environment": {
+    "platform": "macOS arm64",
+    "node": "22.17.0",
+    "python": "3.9.6",
+    "playwright": "1.57.0",
+    "browser": "Chromium 143.0.7499.4",
+    "headless": true
+  },
   "unit_tests": {
     "executed": true,
-    "passed": 55,
+    "original_cases_retained": 55,
+    "passed": 64,
     "failed": 0,
     "skipped": 0,
     "evidence": "docs/unit-results.tap"
   },
   "browser_scenarios": {
-    "authored": 22,
-    "executed_to_completion": false,
-    "results": null
+    "authored": 39,
+    "original_cases_retained": 22,
+    "executed_to_completion": true,
+    "passed": 39,
+    "failed": 0,
+    "results": "docs/browser-results.json",
+    "desktop_viewport": "1366 x 900",
+    "touch_viewport": "390 x 844 emulated",
+    "language_specific_png_artifacts": 18
   },
-  "browser_syntax_claim": false,
+  "javascript_syntax": {
+    "executed": true,
+    "passed_modules": 15
+  },
   "real_device_acceptance": "not performed",
-  "performance_fps": null,
+  "performance_fps": {
+    "observed_mean": 60.9,
+    "scope": "2.0038-second headless software-rendering observation",
+    "real_device_certified": false,
+    "evidence": "docs/browser-results.json"
+  },
+  "native_language_review": "not independently performed",
+  "claude_independent_review": "unavailable: local account restricted",
   "repository": {
-    "proposed_owner": "OliverBennettdev",
-    "proposed_name": "room-layout-planner",
-    "created": false,
-    "uploaded": false,
-    "blocker": "Repository creation connection requires user authorization"
+    "local_initialized": true,
+    "remote_configured": false,
+    "public_created": false,
+    "uploaded": false
+  },
+  "github_actions": {
+    "configured": true,
+    "executed": false
   },
   "deployment": {
     "performed": false,

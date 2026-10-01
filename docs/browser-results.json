@@ -1,0 +1,179 @@
+{
+  "browser": "Chromium 143.0.7499.4",
+  "platform": "darwin headless",
+  "desktop_viewport": "1366 × 900",
+  "mobile_viewport": "390 × 844 (emulated, not real device)",
+  "passed": 39,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "Desktop example, metric geometry, local autosave and zero external requests",
+      "status": "passed"
+    },
+    {
+      "name": "Furniture dimensions, rotate, duplicate, delete, undo and redo",
+      "status": "passed"
+    },
+    {
+      "name": "Negative furniture dimensions leave project unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "Dragging creates exactly one undo step",
+      "status": "passed"
+    },
+    {
+      "name": "Delete and Backspace in input fields do not remove furniture",
+      "status": "passed"
+    },
+    {
+      "name": "Ten metric/imperial switches preserve geometry exactly",
+      "status": "passed"
+    },
+    {
+      "name": "Two-tap wall drawing, length edit and 3–4–5 measurement",
+      "status": "passed"
+    },
+    {
+      "name": "4 × 3 to 4 × 3.5 m clear-inside rectangle resize, undo",
+      "status": "passed"
+    },
+    {
+      "name": "400 pixel / 4 m calibration, geometry preservation and undo",
+      "status": "passed"
+    },
+    {
+      "name": "PNG/JPEG input; corrupt, PDF, >10 MB and >16 MP rejection",
+      "status": "passed"
+    },
+    {
+      "name": "Downloadable high-resolution 2D PNG export",
+      "status": "passed"
+    },
+    {
+      "name": "Embedded-background JSON roundtrip, import history boundary and refresh recovery",
+      "status": "passed"
+    },
+    {
+      "name": "Unknown JSON schema, negative dimensions, duplicate IDs, corrupt/oversize JSON rejected atomically",
+      "status": "passed"
+    },
+    {
+      "name": "Import, new and clear cancellations; confirmed clear removes only app cache",
+      "status": "passed"
+    },
+    {
+      "name": "Disabled browser storage reports failure but preserves editing and JSON download",
+      "status": "passed"
+    },
+    {
+      "name": "WebGL unavailable falls back to usable 2D and export",
+      "status": "passed"
+    },
+    {
+      "name": "Missing Three.js dependency does not block the editor",
+      "status": "passed"
+    },
+    {
+      "name": "Real Three.js 3D geometry, overview, walk, full wall height and return to 2D",
+      "status": "passed"
+    },
+    {
+      "name": "390 px touch workflow, imperial fields, no overflow and 44 px button targets",
+      "status": "passed"
+    },
+    {
+      "name": "Imported/user names render as plain text, not executable HTML",
+      "status": "passed"
+    },
+    {
+      "name": "Background re-selection requires explicit matching alignment; mismatch cannot reuse calibration",
+      "status": "passed"
+    },
+    {
+      "name": "50-wall / 50-item / 2048 px image load and observed 3D frame timing",
+      "status": "passed"
+    },
+    {
+      "name": "en: desktop draft, history, names, error, units, JSON, PNG, 3D and refresh",
+      "status": "passed"
+    },
+    {
+      "name": "en: 390 px touch, panel buttons, numeric inputs and 3D layout",
+      "status": "passed"
+    },
+    {
+      "name": "zh-TW: desktop draft, history, names, error, units, JSON, PNG, 3D and refresh",
+      "status": "passed"
+    },
+    {
+      "name": "zh-TW: 390 px touch, panel buttons, numeric inputs and 3D layout",
+      "status": "passed"
+    },
+    {
+      "name": "ja: desktop draft, history, names, error, units, JSON, PNG, 3D and refresh",
+      "status": "passed"
+    },
+    {
+      "name": "ja: 390 px touch, panel buttons, numeric inputs and 3D layout",
+      "status": "passed"
+    },
+    {
+      "name": "de: desktop draft, history, names, error, units, JSON, PNG, 3D and refresh",
+      "status": "passed"
+    },
+    {
+      "name": "de: 390 px touch, panel buttons, numeric inputs and 3D layout",
+      "status": "passed"
+    },
+    {
+      "name": "fr: desktop draft, history, names, error, units, JSON, PNG, 3D and refresh",
+      "status": "passed"
+    },
+    {
+      "name": "fr: 390 px touch, panel buttons, numeric inputs and 3D layout",
+      "status": "passed"
+    },
+    {
+      "name": "es: desktop draft, history, names, error, units, JSON, PNG, 3D and refresh",
+      "status": "passed"
+    },
+    {
+      "name": "es: 390 px touch, panel buttons, numeric inputs and 3D layout",
+      "status": "passed"
+    },
+    {
+      "name": "Failed language module preserves draft and project; another language still works",
+      "status": "passed"
+    },
+    {
+      "name": "Denied language/project storage remains usable and translates failure messages",
+      "status": "passed"
+    },
+    {
+      "name": "3D dependency failure and its message survive a language switch",
+      "status": "passed"
+    },
+    {
+      "name": "Legacy English names stay literal across languages and unchanged property submission",
+      "status": "passed"
+    },
+    {
+      "name": "Packaged static site preserves language paths and assets under a subdirectory",
+      "status": "passed"
+    }
+  ],
+  "performance": {
+    "frames": 122,
+    "seconds": 2.0038000000953677,
+    "over33ms": 0,
+    "mean_fps": 60.9,
+    "note": "Headless software-rendering observation; not real-device certification or a guaranteed FPS."
+  },
+  "not_tested": [
+    "current stable Chrome/Edge/Firefox/macOS Safari",
+    "real iOS Safari / Android Chrome devices",
+    "physical-device frame rate",
+    "external GitHub deployment"
+  ]
+}

@@ -23,13 +23,18 @@
 - [x] M3：六个静态入口、共享资源、子路径支持、发布脚本和 GitHub 中英文介绍完成。
   - 实际发布包输出：PASS: 30 app-only files in site/; 6 language entries; no docs, tests, .env or Git data.
   - 静态入口测试通过；浏览器实际验证 /site/ 子目录的资源、语言切换和刷新。没有 /en/ 路径。
-  - README 两份共 64 个本地引用检查通过；6 个折叠区、6 张图片引用、6 个表格。中文实际渲染 3 / 3 图片加载成功、3 个表格、3 个折叠区，无横向溢出。
+  - README 两份共 39 个本地文件引用检查通过（不含外部链接和页内锚点）；6 个折叠区、6 张图片引用、6 个表格。英文及中文实际渲染各有 3 / 3 图片加载成功、3 个表格、3 个折叠区，无横向溢出。
   - 封面和最新版真实 2D / 3D 截图已保存在 assets/readme/。部署配置和步骤见 DEPLOYMENT.md。
-- [ ] M4：原浏览器套件与新增六语言桌面/手机回归、截图、最终记录和本地提交。
+- [x] M4：原浏览器套件与新增六语言桌面/手机回归全部通过，截图、完整输出及最终记录已归档。
+  - 环境：macOS arm64，Node v22.17.0，Python 3.9.6，Playwright 1.57.0，Chromium 143.0.7499.4（headless）。桌面 1366 × 900，模拟手机 390 × 844。
+  - 实际输出：64 单元测试通过、0 失败、0 跳过；39 浏览器场景通过、0 失败。全部 15 个 JS 模块与 3 个 Python 脚本语法检查通过；Four Three.js vendor files OK。
+  - 18 个六语言 PNG 文件已生成；12 / 12 张六语言桌面及手机截图已人工检查布局。最新版真实英文 2D、3D、繁中 2D 截图已检查，预览控制台 errors/warnings = []。
+  - 完整证据：[unit-results.tap](unit-results.tap)、[browser-results.json](browser-results.json)、[TESTING.md](TESTING.md)、[RELEASE_STATUS.json](RELEASE_STATUS.json)。没有删除、跳过或放宽原测试。
+  - 已提交：M1 10b6e7d，M2 ef80548，M3 9474a58；M4 提交记录见本地 Git 日志。没有远端或推送。
 
 ## 已有实际证据
 
-- 本地服务：http://127.0.0.1:8000/。原英文示例房间此前已实见 2D → 3D → 2D。
+- 本地服务：http://127.0.0.1:8000/。本次供查看的干净示例：http://localhost:8000/zh-TW/；已实见六语言与 2D → 3D → 2D。
 - 本次已实际打开 /zh-TW/：静态标题、语言菜单、家具库、属性、单位、辅助标签显示繁体中文；旧存档名称 Living + working、Sofa 等按兼容规则保持原文。
 - Three.js 本地依赖：python3 scripts/vendor.py --check，4 个 OK。
 - 英文及中文 README 已制作原创 SVG 封面与真实 2D/3D 截图。六语言改造后的本地引用与实际渲染检查见 M3。
@@ -45,7 +50,7 @@
 
 ## 下一步
 
-完成跨语言保留输入与项目状态的实际验证、德法西手机长文案检查；运行完整浏览器测试，再同步 README 的真实语言状态和部署步骤。
+本次本地改造范围已完成，可直接体验繁中预览和顶部六语言菜单。若要上线，按 DEPLOYMENT.md 选择 Cloudflare Pages 项目与上传方式，公开发布前确认；真实设备、其他浏览器、母语文案与 Claude 独立审阅仍是后续验收项。
 
 ## 参考来源
 
