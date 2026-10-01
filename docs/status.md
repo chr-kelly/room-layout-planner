@@ -20,7 +20,11 @@
   - 实际验证：Node tests 64 / pass 64 / fail 0 / skipped 0；Chromium 浏览器 passed 39 / failed 0，退出码均为 0。原 55 项单元测试、22 项浏览器场景完整保留并通过。
   - 修复实际红测试：校准点按图像像素取整，保持原 400 px / 4 m 的精确断言；仅给动态消息绑定更新，避免换语言时清空家具卡片；语言地址切换前固定同源链接，避免相对资源基址漂移。
   - 六语言覆盖未提交输入、JSON/PNG、3D、数字逗号、存储拒绝和依赖失败；390 × 844 手机为模拟视口。
-- [ ] M3：六个静态入口已生成，正在检查子路径资源与发布包，并同步 README。
+- [x] M3：六个静态入口、共享资源、子路径支持、发布脚本和 GitHub 中英文介绍完成。
+  - 实际发布包输出：PASS: 30 app-only files in site/; 6 language entries; no docs, tests, .env or Git data.
+  - 静态入口测试通过；浏览器实际验证 /site/ 子目录的资源、语言切换和刷新。没有 /en/ 路径。
+  - README 两份共 64 个本地引用检查通过；6 个折叠区、6 张图片引用、6 个表格。中文实际渲染 3 / 3 图片加载成功、3 个表格、3 个折叠区，无横向溢出。
+  - 封面和最新版真实 2D / 3D 截图已保存在 assets/readme/。部署配置和步骤见 DEPLOYMENT.md。
 - [ ] M4：原浏览器套件与新增六语言桌面/手机回归、截图、最终记录和本地提交。
 
 ## 已有实际证据
@@ -28,7 +32,7 @@
 - 本地服务：http://127.0.0.1:8000/。原英文示例房间此前已实见 2D → 3D → 2D。
 - 本次已实际打开 /zh-TW/：静态标题、语言菜单、家具库、属性、单位、辅助标签显示繁体中文；旧存档名称 Living + working、Sofa 等按兼容规则保持原文。
 - Three.js 本地依赖：python3 scripts/vendor.py --check，4 个 OK。
-- 英文及现有中文 README 已制作原创 SVG 封面与真实 2D/3D 截图。此前检查：PASS 35 local README links/assets; 6 collapsible sections; SVG XML; 2 JPEG files；渲染 3 / 3 图片加载成功，无横向溢出。
+- 英文及中文 README 已制作原创 SVG 封面与真实 2D/3D 截图。六语言改造后的本地引用与实际渲染检查见 M3。
 - README 参考读取 3 / 共 3 份选定官方材料：Excalidraw README、tldraw README、Sweet Home 3D 使用指南；未声称穷尽读取它们的全部仓库。
 
 ## 卡点及待确认决策

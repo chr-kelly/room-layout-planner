@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="引っ越す前に家具の配置を試せる、無料のローカル中心2D・3Dプランナー。アカウント不要、アップロードなし、AIの寸法推測なし。" data-i18n-content="ui.plan_your_furniture_layout_before_you_move_a">
+  <meta name="theme-color" content="#f8f7f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; worker-src 'none'">
+  <title data-i18n="ui.room_layout_planner_make_room_for_what_matters">Room Layout Planner — 大切なものに、居場所を。</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script type="module" src="../src/app.js"></script>
+  <!-- Locale links -->
+  <link rel="alternate" hreflang="en" href="../">
+  <link rel="alternate" hreflang="zh-TW" href="../zh-TW/">
+  <link rel="alternate" hreflang="ja" href="../ja/">
+  <link rel="alternate" hreflang="de" href="../de/">
+  <link rel="alternate" hreflang="fr" href="../fr/">
+  <link rel="alternate" hreflang="es" href="../es/">
+  <link rel="alternate" hreflang="x-default" href="../">
+  <!-- End locale links -->
+</head>
+<body>
+  <a class="skip-link" href="#plan-canvas" data-i18n="ui.skip_to_layout">プランへ移動</a>
+  <header class="app-header">
+    <a class="brand" href="../" aria-label="Room Layout Planner ホーム" data-i18n-aria-label="ui.room_layout_planner_home"><span class="brand-mark" aria-hidden="true">⌑</span><span>room<span class="brand-light"> / </span>plan<small data-i18n="ui.make_room_for_what_matters">大切なものに、居場所を。</small></span></a>
+    <div class="header-status"><span class="status-dot"></span><span id="save-status" role="status" aria-live="polite" data-i18n="ui.stored_on_your_device">この端末に保存</span></div>
+    <div id="language-control" class="language-control"></div><div class="header-actions"><button id="new-project" data-i18n="ui.new">新規</button><button id="import-project" data-i18n="ui.open_json">JSONを開く</button><button id="export-project" class="primary"><span data-i18n="ui.export">書き出す</span><span aria-hidden="true">↗</span></button><button id="help" class="icon-button" aria-label="ヘルプとプライバシー" data-i18n-aria-label="ui.help_and_privacy">?</button></div>
+  </header>
+  <main class="app-layout">
+    <aside id="library-panel" class="panel library-panel" aria-label="部屋作成と家具ライブラリー" data-i18n-aria-label="ui.build_and_furniture_library">
+      <div class="panel-mobile-head"><strong data-i18n="ui.build_your_room">部屋を作る</strong><button data-close-panel class="icon-button" aria-label="ライブラリーを閉じる" data-i18n-aria-label="ui.close_library">×</button></div>
+      <div class="panel-intro"><span class="eyebrow" data-i18n="ui.your_space_to_scale">実寸で考える、あなたの空間</span><h1><span data-i18n="ui.a_better_fit">心地よい配置は、</span><br><span data-i18n="ui.starts_here">ここから。</span></h1><p><span data-i18n="ui.use_real_dimensions">実際の寸法で、</span><br><span data-i18n="ui.find_a_layout_that_works">ちょうどよい配置を探そう。</span></p></div>
+      <section class="build-section"><h2 data-i18n="ui.start_with_your_room">まずは部屋から</h2><button id="rectangle-room" class="wide room-button"><span aria-hidden="true">▱</span><span data-i18n="ui.create_resize_room">部屋を作成・変更</span></button><button id="import-image" class="wide secondary" data-i18n="ui.import_a_floor_plan">間取り図を読み込む</button><p class="hint"><span data-i18n="ui.import_as_a_background_then_trace">背景として読み込み、壁をなぞります。</span><br><span data-i18n="ui.no_automatic_wall_or_size_detection">壁や寸法は自動認識しません。</span></p></section>
+      <section><div class="section-heading"><h2 data-i18n="ui.furniture_library">家具ライブラリー</h2><span class="muted" data-i18n="ui.6_essentials">基本の6種類</span></div><div id="presets" class="preset-grid"></div><p class="hint"><span data-i18n="ui.presets_are_a_starting_point">プリセットは出発点。</span><br><span data-i18n="ui.measure_your_own_furniture">自分の家具を測ってください。</span></p><button id="custom-furniture" class="wide" data-i18n="ui.custom_furniture">＋ 自作家具</button></section>
+      <section class="background-section" id="background-controls" hidden></section>
+      <div class="local-note"><span aria-hidden="true">◈</span><div><strong data-i18n="ui.yours_and_only_yours">あなたのプランは、あなたのもの。</strong><p><span data-i18n="ui.your_plans_stay_in_this_browser">プランはこのブラウザー内に保存。</span><br><span data-i18n="ui.download_json_to_keep_a_backup">JSONを保存してバックアップを。</span></p></div></div>
+    </aside>
+    <section class="workspace" aria-label="配置の作業領域" data-i18n-aria-label="ui.layout_workspace">
+      <div class="workspace-top"><div><span class="eyebrow" data-i18n="ui.room_layout_planner">部屋のレイアウトプランナー</span><button id="project-name" class="project-name" title="プラン名を変更" data-i18n-title="ui.rename_project" data-i18n="name.untitled">無題の部屋</button></div><div class="view-switch" role="group" aria-label="配置ビュー" data-i18n-aria-label="ui.layout_view"><button id="view-2d" aria-pressed="true" data-i18n="ui.2d_plan">2Dプラン</button><button id="view-3d" aria-pressed="false" data-i18n="ui.3d_view">3Dビュー</button></div></div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div class="canvas-shell" id="canvas-shell">
+        <canvas id="plan-canvas" tabindex="0" aria-label="編集可能な間取り図です。ライブラリーから家具を追加してドラッグで動かせます。ツールと数値入力も使えます。" data-i18n-aria-label="ui.editable_room_plan_use_the_library_to_add"></canvas>
+        <div id="three-host" hidden></div>
+        <div id="three-error" class="three-error" role="alert" hidden></div>
+        <div class="tool-rail" id="tool-rail" role="toolbar" aria-label="プランのツール" data-i18n-aria-label="ui.plan_tools">
+          <button data-tool="select" aria-pressed="true" title="選択（V）" data-i18n-title="ui.select_v"><span aria-hidden="true">↖</span><small data-i18n="ui.select">選択</small></button>
+          <button data-tool="wall" aria-pressed="false" title="壁を描く（W）" data-i18n-title="ui.draw_wall_w"><span aria-hidden="true">⌜</span><small data-i18n="ui.wall">壁</small></button>
+          <button data-tool="measure" aria-pressed="false" title="計測（M）" data-i18n-title="ui.measure_m"><span aria-hidden="true">↔</span><small data-i18n="ui.measure">計測</small></button>
+          <button data-tool="calibrate" aria-pressed="false" title="背景の縮尺を設定" data-i18n-title="ui.calibrate_background"><span aria-hidden="true">⊹</span><small data-i18n="ui.calibrate">縮尺</small></button>
+          <button data-tool="pan" aria-pressed="false" title="移動（P）" data-i18n-title="ui.pan_p"><span aria-hidden="true">✥</span><small data-i18n="ui.pan">移動</small></button>
+        </div>
+        <div id="three-options" class="three-options" hidden><button id="overview" aria-pressed="true" data-i18n="ui.overview">俯瞰</button><button id="walk" aria-pressed="false" data-i18n="ui.walk_through">ウォーク</button><label class="check-label"><input type="checkbox" id="cutaway" checked><span data-i18n="ui.cutaway_walls">壁をカット表示</span></label></div>
+        <div id="walk-controls" class="walk-controls" hidden><p data-i18n="ui.drag_to_look_no_collision_detection">ドラッグで視線変更・衝突判定なし</p><div><button data-walk="arrowleft" aria-label="左を見る" data-i18n-aria-label="ui.look_left">↶</button><button data-walk="w" aria-label="前進" data-i18n-aria-label="ui.walk_forward">↑</button><button data-walk="arrowright" aria-label="右を見る" data-i18n-aria-label="ui.look_right">↷</button></div><div><button data-walk="a" aria-label="左へ移動" data-i18n-aria-label="ui.step_left">←</button><button data-walk="s" aria-label="後退" data-i18n-aria-label="ui.walk_backward">↓</button><button data-walk="d" aria-label="右へ移動" data-i18n-aria-label="ui.step_right">→</button></div></div>
+        <div class="canvas-bottom"><div class="history-tools"><button id="undo" class="icon-button" aria-label="元に戻す" title="元に戻す（Ctrl / Cmd Z）" data-i18n-aria-label="ui.undo" data-i18n-title="ui.undo_ctrl_cmd_z">↶</button><button id="redo" class="icon-button" aria-label="やり直す" title="やり直す（Ctrl / Cmd Shift Z）" data-i18n-aria-label="ui.redo" data-i18n-title="ui.redo_ctrl_cmd_shift_z">↷</button></div><div class="zoom-tools"><button id="zoom-out" class="icon-button" aria-label="縮小" data-i18n-aria-label="ui.zoom_out">−</button><button id="fit-view" title="全体表示（F）" data-i18n-title="ui.fit_view_f" data-i18n="ui.fit">全体表示</button><button id="zoom-in" class="icon-button" aria-label="拡大" data-i18n-aria-label="ui.zoom_in">+</button></div></div>
+      </div>
+      <div class="workspace-footer"><span id="tool-hint" data-i18n="ui.select_a_piece_to_make_it_yours">家具を選んで、自分の寸法に。</span><label class="check-label"><input type="checkbox" id="snap-grid" checked><span data-i18n="ui.snap">スナップ</span></label><label class="check-label"><input type="checkbox" id="show-grid" checked><span data-i18n="ui.grid">グリッド</span></label></div>
+      <div class="planning-note"><span data-i18n="ui.planning_only_verify_on_site">配置検討用・現地で確認</span><span data-i18n="ui.check_doors_routes_and_clearances_in_person">ドア、搬入経路、通り幅は現地で確認してください。</span></div>
+    </section>
+    <aside id="inspector-panel" class="panel inspector-panel" aria-label="選択した物体の詳細" data-i18n-aria-label="ui.selected_object_properties">
+      <div class="panel-mobile-head"><strong data-i18n="ui.details">詳細</strong><button data-close-panel class="icon-button" aria-label="詳細を閉じる" data-i18n-aria-label="ui.close_details">×</button></div>
+      <div class="inspector-heading"><span class="eyebrow" data-i18n="ui.the_details_matter">細部まで、ぴったりに。</span><h2 id="inspector-title" data-i18n="ui.your_room">部屋</h2></div>
+      <div id="inspector"></div>
+      <section class="objects-section"><div class="section-heading"><h2 data-i18n="ui.in_this_plan">プラン内の物体</h2><span id="object-count" class="count-badge">0</span></div><div id="object-list"></div></section>
+      <section class="project-settings"><h2 data-i18n="ui.project_settings">プラン設定</h2><label for="units" data-i18n="ui.display_units">表示単位</label><select id="units"><option value="metric" data-i18n="ui.metric_metres_286">メートル法（m）</option><option value="imperial" data-i18n="ui.imperial_feet_inches_287">ヤード・ポンド法（ft・in）</option></select><button id="wall-settings" class="wide" data-i18n="ui.wall_height_thickness">壁の高さ・厚さ</button><button id="clear-project" class="wide danger-text" data-i18n="ui.clear_project_saved_copy">プランと保存データを消去</button></section>
+    </aside>
+  </main>
+  <nav class="mobile-nav" aria-label="モバイルパネル" data-i18n-aria-label="ui.mobile_panels"><button data-panel="library" data-i18n="ui.library">ライブラリー</button><button data-panel="tools" data-i18n="ui.tools">ツール</button><button data-panel="inspector" data-i18n="ui.details">詳細</button></nav>
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <input id="image-file" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden>
+  <input id="project-file" type="file" accept="application/json,.json" hidden>
+  <noscript><div class="no-script" data-i18n="ui.javascript_is_required_to_edit_layouts_no_account">編集にはJavaScriptが必要です。アプリと同梱の依存ファイルをダウンロードした後は、アカウントやインターネット接続は不要です。</div></noscript>
+</body>
+</html>

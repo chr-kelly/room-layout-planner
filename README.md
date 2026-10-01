@@ -22,7 +22,7 @@ you can also import a floor-plan image and trace it to scale.
 Save JSON to keep editing, or export PNG to show your layout.
 
 > **0.1.0 · Development preview.** The screenshots below are from a local run.
-> Full browser and real-device acceptance is pending. [Test record](docs/TESTING.md).
+> See the [local test record](docs/TESTING.md). Real-device and other-browser acceptance is pending.
 
 ## See it in action
 
@@ -47,6 +47,7 @@ desk, chair, cabinet or coffee table, then adjust and compare your options.
 | **Switch perspective** | Linked 2D editing and read-only 3D overview with basic walk controls. |
 | **Keep your work** | Device-local autosave, 60-step undo/redo, validated JSON import/export and 2D PNG export. |
 | **Choose your units** | Metric or separate feet/inches fields; switching units preserves the actual geometry. |
+| **Use your language** | Six languages across controls, help, errors, canvas labels and PNG exports. Switch without losing a draft. |
 
 ## Quick start
 
@@ -67,7 +68,8 @@ Open **http://127.0.0.1:8000**, then choose **Try an example**.
 Python 3 is sufficient to serve the app; there is no application build step.
 The first command downloads pinned Three.js files from the official upstream
 and verifies SHA-256 hashes. If the files are already present, you can skip it
-and run the second command to verify them. Node/npm are only needed for development tests.
+and run the second command to verify them. Node 20+ is needed only for development tests,
+regenerating translated HTML entries, or preparing a deployment folder.
 
 <details>
 <summary><strong>Local setup and offline use</strong></summary>
@@ -121,17 +123,42 @@ regulatory compliance, delivery access or safety.
 
 ## Languages
 
-The current app interface is **English**. A [Chinese guide](README.zh-CN.md) is
-available. The proposed next interface covers **English, 繁體中文, 日本語,
-Deutsch, Français and Español**. These six interface translations have not
-been implemented or verified in this version.
+Choose a language in the header or welcome dialog. Controls, help, errors, canvas
+labels and PNG exports follow your choice. Units are independent of language;
+decimal points and decimal commas are both accepted in numeric fields.
+
+| Language | Entry path |
+| --- | --- |
+| English | `/` |
+| 繁體中文 | `/zh-TW/` |
+| 日本語 | `/ja/` |
+| Deutsch | `/de/` |
+| Français | `/fr/` |
+| Español | `/es/` |
+
+Switching updates the interface in place and remembers your preference. Your
+plan, selection, undo history and unsubmitted inputs stay intact. Custom names
+and names in older JSON files stay exactly as written; newly created default
+names follow the interface language. A [Chinese guide](README.zh-CN.md) is available.
+
+For translation changes, edit `src/locales/`, run `node scripts/build-pages.mjs`,
+and run the tests. See [contributing](CONTRIBUTING.md).
 
 ## Self-hosting
 
 The app consists of static files and can be hosted on **Cloudflare Pages** or
-another static host with JavaScript module MIME types. Package `index.html`,
-`favicon.svg`, `src/`, `vendor/`, `LICENSE` and `THIRD_PARTY_NOTICES.md` together.
-See [Cloudflare's static HTML guide](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/).
+another static host with JavaScript module MIME types. Prepare the deployment folder:
+
+```sh
+python3 scripts/package.py --fetch-vendor
+```
+
+Upload the generated **`site/` folder** to Pages. It includes all six language
+entries and local dependencies, and excludes docs, tests, Git data and environment
+files. With Git integration, use framework preset **None**, build command
+`python3 scripts/package.py --fetch-vendor`, and output directory **`site`**.
+See [deployment instructions](docs/DEPLOYMENT.md) and
+[Cloudflare's static HTML guide](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/).
 
 The included [GitHub Pages workflow](.github/workflows/pages.yml) downloads and
 verifies dependencies and packages only app assets. It is manually triggered;
@@ -164,7 +191,10 @@ Authored coverage and completed runs are recorded separately in [TESTING](docs/T
 
 ```text
 index.html                App entry and accessible controls
+zh-TW/ ja/ de/ fr/ es/    Generated static language entries
 src/model.js              Validation, geometry, units and history
+src/i18n.js               In-place language switching and text bindings
+src/locales/              Six complete language catalogues
 src/app.js                Editing, dialogs, gestures and lifecycle
 src/viewport.js           2D canvas, hit tests and PNG export
 src/scene3d.js             Lazy Three.js overview and walk controls
@@ -173,7 +203,7 @@ src/storage.js            Failure-aware localStorage adapter
 vendor/three/             Pinned runtime dependencies and MIT license
 examples/                 Editable example and calibration fixture
 assets/readme/            Original banner and real local screenshots
-scripts/                  Dependency setup and verification
+scripts/                  Verified dependencies, HTML entries and static packaging
 .github/workflows/        Tests and manual GitHub Pages deployment
 ```
 

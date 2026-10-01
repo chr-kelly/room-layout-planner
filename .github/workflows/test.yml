@@ -19,6 +19,7 @@ jobs:
       - name: Fetch fixed-version runtime dependencies
         run: python scripts/vendor.py
       - run: python scripts/vendor.py --check
+      - run: python scripts/package.py
       - run: pip install -r requirements-test.txt
       - run: python -m playwright install --with-deps chromium
       - run: python tests/browser_test.py

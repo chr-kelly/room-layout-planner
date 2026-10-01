@@ -19,14 +19,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: Fetch fixed-version runtime dependencies
-        run: python scripts/vendor.py
-      - run: python scripts/vendor.py --check
-      - run: |
-          mkdir -p site
-          cp index.html favicon.svg LICENSE THIRD_PARTY_NOTICES.md site/
-          cp -r src vendor site/
-          touch site/.nojekyll
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare all six languages and verified local runtime assets
+        run: python scripts/package.py --fetch-vendor
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -20,7 +20,7 @@
 **无需账号或订阅。** 图片和方案由浏览器本地处理。导出 JSON 可以继续编辑，导出 PNG 可以展示布局。
 
 > **0.1.0 · 开发预览。** 下方图片来自实际本地运行。
-> 完整浏览器和真实设备验收仍待完成，详见 [测试记录](docs/TESTING.md)。
+> 本地验证详见 [测试记录](docs/TESTING.md)，真实设备与其他浏览器验收仍待完成。
 
 ## 看看实际效果
 
@@ -43,6 +43,7 @@
 | **切换视角** | 在 2D 编辑同一份方案，用只读 3D 鸟瞰和基础漫游查看。 |
 | **保存方案** | 浏览器本地自动保存、60 步撤销重做、校验后导入导出 JSON、导出 2D PNG。 |
 | **选择尺寸单位** | 公制或独立的英尺/英寸输入；切换单位不会改变真实几何。 |
+| **选择界面语言** | 六种语言覆盖操作、帮助、错误、画布和 PNG 导出，切换时保留未提交输入。 |
 
 ## 快速开始
 
@@ -54,14 +55,14 @@ python3 scripts/vendor.py --check
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-访问 **http://127.0.0.1:8000**，点击 **Try an example**。
+访问 **http://127.0.0.1:8000/zh-TW/**，点击 **試用範例**；也可以从顶部菜单选择语言。
 
 1. **建立房间。** 输入内净尺寸，或导入户型图片，用实测长度校准。
 2. **试摆家具。** 添加家具，输入它的实际尺寸，再拖动、旋转。
 3. **检查并备份。** 切换 3D 查看，导出 PNG，同时下载可继续编辑的 JSON。
 
 Python 3 即可启动静态服务，无需应用构建。第一条命令从 Three.js 官方上游下载固定版本并校验 SHA-256。
-文件已经齐备时可以跳过第一条，执行第二条校验现有文件。Node/npm 仅用于开发测试。
+文件已经齐备时可以跳过第一条，执行第二条校验现有文件。只有开发测试、重新生成语言入口或准备发布目录时需要 Node 20+。
 
 <details>
 <summary><strong>本地依赖与离线运行</strong></summary>
@@ -104,14 +105,34 @@ Python 3 即可启动静态服务，无需应用构建。第一条命令从 Thre
 
 ## 语言
 
-当前应用界面为**英语**，本文件提供中文说明。下一版已选定英语、繁体中文、日语、德语、法语、西班牙语。
-这 6 种界面的翻译仍处于改造方案阶段，尚未实现或验证。
+在顶部或欢迎弹窗中选择语言。操作、帮助、错误提示、画布标签和导出 PNG 都会同步切换。
+尺寸单位独立于语言，数值输入同时支持小数点和小数逗号。
+
+| 语言 | 入口路径 |
+| --- | --- |
+| 英语 | `/` |
+| 繁体中文 | `/zh-TW/` |
+| 日语 | `/ja/` |
+| 德语 | `/de/` |
+| 法语 | `/fr/` |
+| 西班牙语 | `/es/` |
+
+切换语言不会重新加载方案，当前选择、撤销历史和未提交输入会保留；浏览器记住你的选择。
+用户名称及旧 JSON 中的名称保留原文，新建的默认名称随界面语言显示。
+修改语言文案后，运行 `node scripts/build-pages.mjs` 更新静态入口，再运行测试，详见 [贡献指南](CONTRIBUTING.md)。
 
 ## 自行托管
 
 这是静态网站，可以部署到 **Cloudflare Pages**，或其他能正确提供 JavaScript 模块类型的静态托管服务。
-一起打包 `index.html`、`favicon.svg`、`src/`、`vendor/`、`LICENSE` 和 `THIRD_PARTY_NOTICES.md`。
-参见 [Cloudflare 静态 HTML 部署说明](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/)。
+先生成发布目录：
+
+```sh
+python3 scripts/package.py --fetch-vendor
+```
+
+上传生成的 **`site/` 文件夹**。其中含六个语言入口和本地依赖，排除了文档、测试、Git 数据和环境文件。
+使用 Git 集成时，框架选 **None**，构建命令填 `python3 scripts/package.py --fetch-vendor`，输出目录填 **`site`**。
+参见 [本项目部署说明](docs/DEPLOYMENT.md) 和 [Cloudflare 静态 HTML 部署说明](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/)。
 
 附带的 [GitHub Pages 工作流](.github/workflows/pages.yml) 会下载、校验依赖，只打包应用资源。
 需将仓库 Pages 配置为使用 GitHub Actions，再手动运行。它与 Cloudflare Pages 是两种独立托管方式。
@@ -139,7 +160,10 @@ python3 tests/browser_test.py
 
 ```text
 index.html                应用入口与可访问控件
+zh-TW/ ja/ de/ fr/ es/    生成的静态语言入口
 src/model.js              校验、几何、单位与撤销历史
+src/i18n.js               就地切换语言与文案绑定
+src/locales/              六套完整语言文案
 src/app.js                编辑、弹窗、手势与生命周期
 src/viewport.js           2D 画布、命中判断与 PNG 导出
 src/scene3d.js             按需加载的 Three.js 鸟瞰和漫游
@@ -148,7 +172,7 @@ src/storage.js            可报告错误的 localStorage 适配
 vendor/three/             固定版本依赖与 MIT 许可证
 examples/                 可编辑示例与校准图片
 assets/readme/            原创封面与真实本地截图
-scripts/                  依赖下载与校验
+scripts/                  依赖校验、语言入口与静态发布包
 .github/workflows/        测试与手动 GitHub Pages 部署
 ```
 

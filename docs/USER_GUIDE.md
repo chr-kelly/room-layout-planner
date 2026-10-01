@@ -1,6 +1,13 @@
 # User guide
 
-## 1. Start and choose units
+## 1. Start, choose a language and choose units
+
+Use the header or welcome-dialog language menu for English, 繁體中文, 日本語,
+Deutsch, Français or Español. English uses the root path; the other entries are
+`/zh-TW/`, `/ja/`, `/de/`, `/fr/` and `/es/`. Switching keeps your plan, undo history,
+selection and unsubmitted fields, and remembers your preference. An explicit
+language URL wins over the saved preference. Custom and older project names are
+preserved literally. Newly created default names follow the interface language.
 
 Choose Metric or Feet + inches explicitly. Start blank, or load the example.
 Before replacing an existing project, use **Download JSON first** in the
@@ -49,6 +56,8 @@ independent object; Delete is undoable. Furniture overlap is not validated.
 When using imperial units, feet and inches have separate inputs. Dimensions
 must be positive. Position fields may be signed. Internally every coordinate is
 stored in metres, and merely switching the display unit leaves geometry unchanged.
+Numeric fields accept both decimal points and decimal commas, without thousands
+separators. For example, `2.25` and `2,25` both mean 2.25 metres in a metric field.
 
 ## 5. Measure and view
 
@@ -93,4 +102,5 @@ Clear current project requires confirmation and only removes this app's cache.
 
 Every core action also has a visible button. On smaller screens, open Library,
 Tools, or Details from the bottom navigation and close the panel to return to
-the canvas. Dialogs and errors are English and do not rely on hover.
+the canvas. Dialogs, errors, help, accessible labels and PNG export text follow
+the selected language and do not rely on hover.

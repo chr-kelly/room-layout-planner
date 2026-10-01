@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Plane deine Möbel vor dem Umzug. Kostenloser 2D- und 3D-Raumplaner mit lokalen Daten. Kein Konto, keine Uploads, kein Raten durch KI." data-i18n-content="ui.plan_your_furniture_layout_before_you_move_a">
+  <meta name="theme-color" content="#f8f7f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; worker-src 'none'">
+  <title data-i18n="ui.room_layout_planner_make_room_for_what_matters">Room Layout Planner — Raum für das, was zählt</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../src/styles.css">
+  <script type="module" src="../src/app.js"></script>
+  <!-- Locale links -->
+  <link rel="alternate" hreflang="en" href="../">
+  <link rel="alternate" hreflang="zh-TW" href="../zh-TW/">
+  <link rel="alternate" hreflang="ja" href="../ja/">
+  <link rel="alternate" hreflang="de" href="../de/">
+  <link rel="alternate" hreflang="fr" href="../fr/">
+  <link rel="alternate" hreflang="es" href="../es/">
+  <link rel="alternate" hreflang="x-default" href="../">
+  <!-- End locale links -->
+</head>
+<body>
+  <a class="skip-link" href="#plan-canvas" data-i18n="ui.skip_to_layout">Zum Plan springen</a>
+  <header class="app-header">
+    <a class="brand" href="../" aria-label="Room Layout Planner Startseite" data-i18n-aria-label="ui.room_layout_planner_home"><span class="brand-mark" aria-hidden="true">⌑</span><span>room<span class="brand-light"> / </span>plan<small data-i18n="ui.make_room_for_what_matters">RAUM FÜR DAS, WAS ZÄHLT</small></span></a>
+    <div class="header-status"><span class="status-dot"></span><span id="save-status" role="status" aria-live="polite" data-i18n="ui.stored_on_your_device">Auf deinem Gerät gespeichert</span></div>
+    <div id="language-control" class="language-control"></div><div class="header-actions"><button id="new-project" data-i18n="ui.new">Neu</button><button id="import-project" data-i18n="ui.open_json">JSON öffnen</button><button id="export-project" class="primary"><span data-i18n="ui.export">Export</span><span aria-hidden="true">↗</span></button><button id="help" class="icon-button" aria-label="Hilfe und Datenschutz" data-i18n-aria-label="ui.help_and_privacy">?</button></div>
+  </header>
+  <main class="app-layout">
+    <aside id="library-panel" class="panel library-panel" aria-label="Raumgestaltung und Möbelbibliothek" data-i18n-aria-label="ui.build_and_furniture_library">
+      <div class="panel-mobile-head"><strong data-i18n="ui.build_your_room">Raum gestalten</strong><button data-close-panel class="icon-button" aria-label="Bibliothek schließen" data-i18n-aria-label="ui.close_library">×</button></div>
+      <div class="panel-intro"><span class="eyebrow" data-i18n="ui.your_space_to_scale">DEIN RAUM, MAßSTABSGETREU</span><h1><span data-i18n="ui.a_better_fit">Alles passt</span><br><span data-i18n="ui.starts_here">beginnt hier.</span></h1><p><span data-i18n="ui.use_real_dimensions">Nutze echte Maße.</span><br><span data-i18n="ui.find_a_layout_that_works">Finde eine passende Aufteilung.</span></p></div>
+      <section class="build-section"><h2 data-i18n="ui.start_with_your_room">Mit dem Raum beginnen</h2><button id="rectangle-room" class="wide room-button"><span aria-hidden="true">▱</span><span data-i18n="ui.create_resize_room">Raum erstellen / ändern</span></button><button id="import-image" class="wide secondary" data-i18n="ui.import_a_floor_plan">Grundriss importieren</button><p class="hint"><span data-i18n="ui.import_as_a_background_then_trace">Als Hintergrund importieren, dann nachzeichnen.</span><br><span data-i18n="ui.no_automatic_wall_or_size_detection">Keine automatische Wand- oder Maßerkennung.</span></p></section>
+      <section><div class="section-heading"><h2 data-i18n="ui.furniture_library">Möbelbibliothek</h2><span class="muted" data-i18n="ui.6_essentials">6 Grundmöbel</span></div><div id="presets" class="preset-grid"></div><p class="hint"><span data-i18n="ui.presets_are_a_starting_point">Vorlagen sind ein Ausgangspunkt.</span><br><span data-i18n="ui.measure_your_own_furniture">Miss deine eigenen Möbel nach.</span></p><button id="custom-furniture" class="wide" data-i18n="ui.custom_furniture">+ Eigenes Möbel</button></section>
+      <section class="background-section" id="background-controls" hidden></section>
+      <div class="local-note"><span aria-hidden="true">◈</span><div><strong data-i18n="ui.yours_and_only_yours">Dein Plan bleibt dein Plan.</strong><p><span data-i18n="ui.your_plans_stay_in_this_browser">Pläne bleiben in diesem Browser.</span><br><span data-i18n="ui.download_json_to_keep_a_backup">Lade JSON als Sicherung herunter.</span></p></div></div>
+    </aside>
+    <section class="workspace" aria-label="Planungsbereich" data-i18n-aria-label="ui.layout_workspace">
+      <div class="workspace-top"><div><span class="eyebrow" data-i18n="ui.room_layout_planner">RAUMPLANER</span><button id="project-name" class="project-name" title="Plan umbenennen" data-i18n-title="ui.rename_project" data-i18n="name.untitled">Unbenannter Raum</button></div><div class="view-switch" role="group" aria-label="Planansicht" data-i18n-aria-label="ui.layout_view"><button id="view-2d" aria-pressed="true" data-i18n="ui.2d_plan">2D-Plan</button><button id="view-3d" aria-pressed="false" data-i18n="ui.3d_view">3D-Ansicht</button></div></div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div class="canvas-shell" id="canvas-shell">
+        <canvas id="plan-canvas" tabindex="0" aria-label="Bearbeitbarer Raumplan. Füge Möbel aus der Bibliothek hinzu und ziehe sie an ihren Platz. Werkzeuge und Zahlenfelder stehen ebenfalls bereit." data-i18n-aria-label="ui.editable_room_plan_use_the_library_to_add"></canvas>
+        <div id="three-host" hidden></div>
+        <div id="three-error" class="three-error" role="alert" hidden></div>
+        <div class="tool-rail" id="tool-rail" role="toolbar" aria-label="Planwerkzeuge" data-i18n-aria-label="ui.plan_tools">
+          <button data-tool="select" aria-pressed="true" title="Auswahl (V)" data-i18n-title="ui.select_v"><span aria-hidden="true">↖</span><small data-i18n="ui.select">Auswahl</small></button>
+          <button data-tool="wall" aria-pressed="false" title="Wand zeichnen (W)" data-i18n-title="ui.draw_wall_w"><span aria-hidden="true">⌜</span><small data-i18n="ui.wall">Wand</small></button>
+          <button data-tool="measure" aria-pressed="false" title="Messen (M)" data-i18n-title="ui.measure_m"><span aria-hidden="true">↔</span><small data-i18n="ui.measure">Messen</small></button>
+          <button data-tool="calibrate" aria-pressed="false" title="Hintergrund kalibrieren" data-i18n-title="ui.calibrate_background"><span aria-hidden="true">⊹</span><small data-i18n="ui.calibrate">Maßstab</small></button>
+          <button data-tool="pan" aria-pressed="false" title="Schieben (P)" data-i18n-title="ui.pan_p"><span aria-hidden="true">✥</span><small data-i18n="ui.pan">Schieben</small></button>
+        </div>
+        <div id="three-options" class="three-options" hidden><button id="overview" aria-pressed="true" data-i18n="ui.overview">Übersicht</button><button id="walk" aria-pressed="false" data-i18n="ui.walk_through">Rundgang</button><label class="check-label"><input type="checkbox" id="cutaway" checked><span data-i18n="ui.cutaway_walls">Wände schneiden</span></label></div>
+        <div id="walk-controls" class="walk-controls" hidden><p data-i18n="ui.drag_to_look_no_collision_detection">Ziehen zum Umsehen · Keine Kollisionsprüfung</p><div><button data-walk="arrowleft" aria-label="Nach links schauen" data-i18n-aria-label="ui.look_left">↶</button><button data-walk="w" aria-label="Vorwärts gehen" data-i18n-aria-label="ui.walk_forward">↑</button><button data-walk="arrowright" aria-label="Nach rechts schauen" data-i18n-aria-label="ui.look_right">↷</button></div><div><button data-walk="a" aria-label="Nach links gehen" data-i18n-aria-label="ui.step_left">←</button><button data-walk="s" aria-label="Rückwärts gehen" data-i18n-aria-label="ui.walk_backward">↓</button><button data-walk="d" aria-label="Nach rechts gehen" data-i18n-aria-label="ui.step_right">→</button></div></div>
+        <div class="canvas-bottom"><div class="history-tools"><button id="undo" class="icon-button" aria-label="Rückgängig" title="Rückgängig (Ctrl / Cmd Z)" data-i18n-aria-label="ui.undo" data-i18n-title="ui.undo_ctrl_cmd_z">↶</button><button id="redo" class="icon-button" aria-label="Wiederholen" title="Wiederholen (Ctrl / Cmd Shift Z)" data-i18n-aria-label="ui.redo" data-i18n-title="ui.redo_ctrl_cmd_shift_z">↷</button></div><div class="zoom-tools"><button id="zoom-out" class="icon-button" aria-label="Verkleinern" data-i18n-aria-label="ui.zoom_out">−</button><button id="fit-view" title="Einpassen (F)" data-i18n-title="ui.fit_view_f" data-i18n="ui.fit">Einpassen</button><button id="zoom-in" class="icon-button" aria-label="Vergrößern" data-i18n-aria-label="ui.zoom_in">+</button></div></div>
+      </div>
+      <div class="workspace-footer"><span id="tool-hint" data-i18n="ui.select_a_piece_to_make_it_yours">Wähle ein Möbelstück und passe es an.</span><label class="check-label"><input type="checkbox" id="snap-grid" checked><span data-i18n="ui.snap">Einrasten</span></label><label class="check-label"><input type="checkbox" id="show-grid" checked><span data-i18n="ui.grid">Raster</span></label></div>
+      <div class="planning-note"><span data-i18n="ui.planning_only_verify_on_site">Nur Planung · Vor Ort prüfen</span><span data-i18n="ui.check_doors_routes_and_clearances_in_person">Prüfe Türen, Wege und Abstände vor Ort.</span></div>
+    </section>
+    <aside id="inspector-panel" class="panel inspector-panel" aria-label="Eigenschaften des ausgewählten Objekts" data-i18n-aria-label="ui.selected_object_properties">
+      <div class="panel-mobile-head"><strong data-i18n="ui.details">Details</strong><button data-close-panel class="icon-button" aria-label="Details schließen" data-i18n-aria-label="ui.close_details">×</button></div>
+      <div class="inspector-heading"><span class="eyebrow" data-i18n="ui.the_details_matter">DIE DETAILS ZÄHLEN</span><h2 id="inspector-title" data-i18n="ui.your_room">Dein Raum</h2></div>
+      <div id="inspector"></div>
+      <section class="objects-section"><div class="section-heading"><h2 data-i18n="ui.in_this_plan">In diesem Plan</h2><span id="object-count" class="count-badge">0</span></div><div id="object-list"></div></section>
+      <section class="project-settings"><h2 data-i18n="ui.project_settings">Planeinstellungen</h2><label for="units" data-i18n="ui.display_units">Anzeigeeinheiten</label><select id="units"><option value="metric" data-i18n="ui.metric_metres_286">Metrisch (Meter)</option><option value="imperial" data-i18n="ui.imperial_feet_inches_287">Imperial (Fuß + Zoll)</option></select><button id="wall-settings" class="wide" data-i18n="ui.wall_height_thickness">Wandhöhe und -stärke</button><button id="clear-project" class="wide danger-text" data-i18n="ui.clear_project_saved_copy">Plan und gespeicherte Kopie löschen</button></section>
+    </aside>
+  </main>
+  <nav class="mobile-nav" aria-label="Mobile Bereiche" data-i18n-aria-label="ui.mobile_panels"><button data-panel="library" data-i18n="ui.library">Bibliothek</button><button data-panel="tools" data-i18n="ui.tools">Werkzeuge</button><button data-panel="inspector" data-i18n="ui.details">Details</button></nav>
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <input id="image-file" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden>
+  <input id="project-file" type="file" accept="application/json,.json" hidden>
+  <noscript><div class="no-script" data-i18n="ui.javascript_is_required_to_edit_layouts_no_account">Zum Bearbeiten ist JavaScript nötig. Nach dem Download der App und ihrer lokalen Abhängigkeiten sind weder Konto noch Internetverbindung nötig.</div></noscript>
+</body>
+</html>
