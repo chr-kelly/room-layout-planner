@@ -1,0 +1,340 @@
+TAP version 13
+# Subtest: blank project has no walls, furniture, background or private data
+ok 1 - blank project has no walls, furniture, background or private data
+  ---
+  duration_ms: 5.552641
+  type: 'test'
+  ...
+# Subtest: example is editable schema 1 with at least three real-size items
+ok 2 - example is editable schema 1 with at least three real-size items
+  ---
+  duration_ms: 4.973892
+  type: 'test'
+  ...
+# Subtest: 4 × 3 m rectangle has exact clear inside dimensions, not centreline dimensions
+ok 3 - 4 × 3 m rectangle has exact clear inside dimensions, not centreline dimensions
+  ---
+  duration_ms: 0.552087
+  type: 'test'
+  ...
+# Subtest: resize to 4 × 3.5 m preserves wall IDs
+ok 4 - resize to 4 × 3.5 m preserves wall IDs
+  ---
+  duration_ms: 0.248593
+  type: 'test'
+  ...
+# Subtest: one foot is exactly .3048 m and three feet .9144 m
+ok 5 - one foot is exactly .3048 m and three feet .9144 m
+  ---
+  duration_ms: 0.176762
+  type: 'test'
+  ...
+# Subtest: imperial display conversion works for positive and negative values
+ok 6 - imperial display conversion works for positive and negative values
+  ---
+  duration_ms: 0.173856
+  type: 'test'
+  ...
+# Subtest: ten unit switches do not mutate any geometry
+ok 7 - ten unit switches do not mutate any geometry
+  ---
+  duration_ms: 0.81996
+  type: 'test'
+  ...
+# Subtest: 3–4–5 triangle measurement is exactly five metres
+ok 8 - 3–4–5 triangle measurement is exactly five metres
+  ---
+  duration_ms: 0.217586
+  type: 'test'
+  ...
+# Subtest: 2 × .9 × .8 sofa retains metre dimensions
+ok 9 - 2 × .9 × .8 sofa retains metre dimensions
+  ---
+  duration_ms: 0.42163
+  type: 'test'
+  ...
+# Subtest: 90-degree furniture rotation swaps plan extents
+ok 10 - 90-degree furniture rotation swaps plan extents
+  ---
+  duration_ms: 0.839789
+  type: 'test'
+  ...
+# Subtest: rotated hit test uses the true footprint
+ok 11 - rotated hit test uses the true footprint
+  ---
+  duration_ms: 0.365823
+  type: 'test'
+  ...
+# Subtest: wall length editing anchors the start endpoint
+ok 12 - wall length editing anchors the start endpoint
+  ---
+  duration_ms: 0.360841
+  type: 'test'
+  ...
+# Subtest: point-to-wall distance handles a zero-length reference defensively
+ok 13 - point-to-wall distance handles a zero-length reference defensively
+  ---
+  duration_ms: 1.521988
+  type: 'test'
+  ...
+# Subtest: calibration: 400 px becomes 4 m, 200 px becomes 2 m
+ok 14 - calibration: 400 px becomes 4 m, 200 px becomes 2 m
+  ---
+  duration_ms: 0.400721
+  type: 'test'
+  ...
+# Subtest: recalibration keeps the first selected image point anchored
+ok 15 - recalibration keeps the first selected image point anchored
+  ---
+  duration_ms: 0.273394
+  type: 'test'
+  ...
+# Subtest: recalibration does not change existing wall or furniture geometry
+ok 16 - recalibration does not change existing wall or furniture geometry
+  ---
+  duration_ms: 0.403315
+  type: 'test'
+  ...
+# Subtest: invalid calibration length 0 is refused
+ok 17 - invalid calibration length 0 is refused
+  ---
+  duration_ms: 0.337771
+  type: 'test'
+  ...
+# Subtest: invalid calibration length -1 is refused
+ok 18 - invalid calibration length -1 is refused
+  ---
+  duration_ms: 0.060405
+  type: 'test'
+  ...
+# Subtest: invalid calibration length NaN is refused
+ok 19 - invalid calibration length NaN is refused
+  ---
+  duration_ms: 0.153499
+  type: 'test'
+  ...
+# Subtest: invalid calibration length Infinity is refused
+ok 20 - invalid calibration length Infinity is refused
+  ---
+  duration_ms: 0.210057
+  type: 'test'
+  ...
+# Subtest: invalid calibration length 4 is refused
+ok 21 - invalid calibration length 4 is refused
+  ---
+  duration_ms: 0.063189
+  type: 'test'
+  ...
+# Subtest: coincident calibration points are refused
+ok 22 - coincident calibration points are refused
+  ---
+  duration_ms: 0.100091
+  type: 'test'
+  ...
+# Subtest: calibration outside image is refused on JSON import
+ok 23 - calibration outside image is refused on JSON import
+  ---
+  duration_ms: 0.208311
+  type: 'test'
+  ...
+# Subtest: inconsistent calibration scale is refused on JSON import
+ok 24 - inconsistent calibration scale is refused on JSON import
+  ---
+  duration_ms: 0.478287
+  type: 'test'
+  ...
+# Subtest: JSON roundtrip preserves geometry without cumulative drift
+ok 25 - JSON roundtrip preserves geometry without cumulative drift
+  ---
+  duration_ms: 5.823023
+  type: 'test'
+  ...
+# Subtest: unknown higher schema is refused without touching source
+ok 26 - unknown higher schema is refused without touching source
+  ---
+  duration_ms: 0.503358
+  type: 'test'
+  ...
+# Subtest: invalid JSON is rejected with an actionable error
+ok 27 - invalid JSON is rejected with an actionable error
+  ---
+  duration_ms: 0.214403
+  type: 'test'
+  ...
+# Subtest: JSON over 10 MB is refused
+ok 28 - JSON over 10 MB is refused
+  ---
+  duration_ms: 43.353873
+  type: 'test'
+  ...
+# Subtest: invalid furniture width 0 is refused
+ok 29 - invalid furniture width 0 is refused
+  ---
+  duration_ms: 0.50697
+  type: 'test'
+  ...
+# Subtest: invalid furniture width -1 is refused
+ok 30 - invalid furniture width -1 is refused
+  ---
+  duration_ms: 1.836113
+  type: 'test'
+  ...
+# Subtest: invalid furniture width Infinity is refused
+ok 31 - invalid furniture width Infinity is refused
+  ---
+  duration_ms: 2.367084
+  type: 'test'
+  ...
+# Subtest: invalid furniture width NaN is refused
+ok 32 - invalid furniture width NaN is refused
+  ---
+  duration_ms: 0.999547
+  type: 'test'
+  ...
+# Subtest: invalid furniture width 2 is refused
+ok 33 - invalid furniture width 2 is refused
+  ---
+  duration_ms: 0.190013
+  type: 'test'
+  ...
+# Subtest: duplicate IDs across object categories are rejected
+ok 34 - duplicate IDs across object categories are rejected
+  ---
+  duration_ms: 0.208078
+  type: 'test'
+  ...
+# Subtest: 200 item cap is enforced separately per category
+ok 35 - 200 item cap is enforced separately per category
+  ---
+  duration_ms: 4.550038
+  type: 'test'
+  ...
+# Subtest: zero-length wall is refused
+ok 36 - zero-length wall is refused
+  ---
+  duration_ms: 0.19256
+  type: 'test'
+  ...
+# Subtest: out-of-range coordinates, long names and malformed colors are refused
+ok 37 - out-of-range coordinates, long names and malformed colors are refused
+  ---
+  duration_ms: 3.071924
+  type: 'test'
+  ...
+# Subtest: unknown fields and prototype payloads are not retained
+ok 38 - unknown fields and prototype payloads are not retained
+  ---
+  duration_ms: 0.361618
+  type: 'test'
+  ...
+# Subtest: markup in names stays a plain string (DOM rendering uses textContent)
+ok 39 - markup in names stays a plain string (DOM rendering uses textContent)
+  ---
+  duration_ms: 0.202507
+  type: 'test'
+  ...
+# Subtest: external image URLs and SVG data URLs are refused
+ok 40 - external image URLs and SVG data URLs are refused
+  ---
+  duration_ms: 0.436678
+  type: 'test'
+  ...
+# Subtest: embedded image over 2 MB is refused
+ok 41 - embedded image over 2 MB is refused
+  ---
+  duration_ms: 9.60817
+  type: 'test'
+  ...
+# Subtest: serialization omits background bytes by default but retains calibration
+ok 42 - serialization omits background bytes by default but retains calibration
+  ---
+  duration_ms: 0.302767
+  type: 'test'
+  ...
+# Subtest: history retains at least 50 operations and redo restores the full state
+ok 43 - history retains at least 50 operations and redo restores the full state
+  ---
+  duration_ms: 1.59584
+  type: 'test'
+  ...
+# Subtest: undo followed by a new edit drops the redo branch
+ok 44 - undo followed by a new edit drops the redo branch
+  ---
+  duration_ms: 1.133722
+  type: 'test'
+  ...
+# Subtest: one drag is represented by a single recorded snapshot
+ok 45 - one drag is represented by a single recorded snapshot
+  ---
+  duration_ms: 5.886706
+  type: 'test'
+  ...
+# Subtest: camera changes are not model history entries; identical states are ignored
+ok 46 - camera changes are not model history entries; identical states are ignored
+  ---
+  duration_ms: 0.413026
+  type: 'test'
+  ...
+# Subtest: new project / import creates a clean history boundary
+ok 47 - new project / import creates a clean history boundary
+  ---
+  duration_ms: 0.965813
+  type: 'test'
+  ...
+# Subtest: storage autosave and restore preserve dimensions and units, not raster data
+ok 48 - storage autosave and restore preserve dimensions and units, not raster data
+  ---
+  duration_ms: 0.926452
+  type: 'test'
+  ...
+# Subtest: disabled localStorage is reported as failure, never as saved
+ok 49 - disabled localStorage is reported as failure, never as saved
+  ---
+  duration_ms: 0.461721
+  type: 'test'
+  ...
+# Subtest: storage quota failure preserves the in-memory project
+ok 50 - storage quota failure preserves the in-memory project
+  ---
+  duration_ms: 0.931264
+  type: 'test'
+  ...
+# Subtest: clear only removes this app’s storage key
+ok 51 - clear only removes this app’s storage key
+  ---
+  duration_ms: 0.123596
+  type: 'test'
+  ...
+# Subtest: corrupt saved data is left untouched on failed restore
+ok 52 - corrupt saved data is left untouched on failed restore
+  ---
+  duration_ms: 0.126613
+  type: 'test'
+  ...
+# Subtest: PNG dimensions are read from header before raster decode
+ok 53 - PNG dimensions are read from header before raster decode
+  ---
+  duration_ms: 0.678285
+  type: 'test'
+  ...
+# Subtest: a 25 megapixel image is refused before decoding
+ok 54 - a 25 megapixel image is refused before decoding
+  ---
+  duration_ms: 0.281992
+  type: 'test'
+  ...
+# Subtest: corrupt images, PDF and SVG signatures are refused
+ok 55 - corrupt images, PDF and SVG signatures are refused
+  ---
+  duration_ms: 0.515905
+  type: 'test'
+  ...
+1..55
+# tests 55
+# suites 0
+# pass 55
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 341.46095

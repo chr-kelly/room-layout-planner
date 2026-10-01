@@ -1,0 +1,34 @@
+{
+  "version": "0.1.0",
+  "distribution": "source-only",
+  "release_status": "development-preview",
+  "recorded_date": "2026-10-01",
+  "runtime_vendor_files_bundled": false,
+  "vendor_setup_command": "python3 scripts/vendor.py",
+  "unit_tests": {
+    "executed": true,
+    "passed": 55,
+    "failed": 0,
+    "skipped": 0,
+    "evidence": "docs/unit-results.tap"
+  },
+  "browser_scenarios": {
+    "authored": 22,
+    "executed_to_completion": false,
+    "results": null
+  },
+  "browser_syntax_claim": false,
+  "real_device_acceptance": "not performed",
+  "performance_fps": null,
+  "repository": {
+    "proposed_owner": "OliverBennettdev",
+    "proposed_name": "room-layout-planner",
+    "created": false,
+    "uploaded": false,
+    "blocker": "Repository creation connection requires user authorization"
+  },
+  "deployment": {
+    "performed": false,
+    "url": null
+  }
+}

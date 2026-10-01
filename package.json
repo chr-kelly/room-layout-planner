@@ -1,0 +1,15 @@
+{
+  "name": "room-layout-planner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A local-first, no-build 2D and 3D furniture layout planner.",
+  "license": "MIT",
+  "scripts": {
+    "start": "python3 -m http.server 8000 --bind 127.0.0.1",
+    "test": "node --test tests/*.test.js",
+    "test:browser": "python3 tests/browser_test.py",
+    "vendor:check": "python3 scripts/vendor.py --check"
+  },
+  "engines": { "node": ">=20" }
+}

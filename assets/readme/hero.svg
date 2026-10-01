@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="480" viewBox="0 0 1280 480" role="img" aria-labelledby="title desc">
+  <title id="title">Room Layout Planner — Make room for what matters</title>
+  <desc id="desc">A warm cream banner with a terracotta room icon and an original floor-plan illustration. A free, local-first 2D and 3D furniture layout planner.</desc>
+  <defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#e5e2d9" stroke-width="1"/></pattern></defs>
+  <rect width="1280" height="480" rx="24" fill="#f8f7f3"/>
+  <path d="M720 0H1256Q1280 0 1280 24V456Q1280 480 1256 480H720Z" fill="#eeeee5"/>
+  <rect x="64" y="58" width="58" height="58" rx="16" fill="#eeddd0"/>
+  <path d="M78 72Q93 78 108 72Q102 87 108 102Q93 96 78 102Q84 87 78 72Z" fill="none" stroke="#a5593d" stroke-width="3"/>
+  <text x="138" y="88" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" fill="#303a32">room / plan</text>
+  <text x="139" y="109" font-family="Arial, Helvetica, sans-serif" font-size="10" letter-spacing="2.5" fill="#70776b">ROOM LAYOUT PLANNER</text>
+  <text x="64" y="193" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" letter-spacing="-1.5" fill="#303a32">Make room for</text>
+  <text x="64" y="255" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" letter-spacing="-1.5" fill="#a5593d">what matters.</text>
+  <text x="66" y="308" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#626c60">Try your furniture. Find your fit.</text>
+  <text x="66" y="337" font-family="Arial, Helvetica, sans-serif" font-size="19" fill="#626c60">A free 2D + 3D planner, in your browser.</text>
+  <rect x="64" y="380" width="108" height="34" rx="17" fill="#e9ecdf"/><rect x="184" y="380" width="122" height="34" rx="17" fill="#eeddd0"/><rect x="318" y="380" width="118" height="34" rx="17" fill="#e9ecdf"/>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="600" text-anchor="middle" fill="#465340"><text x="118" y="402">Local-first</text><text x="245" y="402">Open source</text><text x="377" y="402">No accounts</text></g>
+  <rect x="782" y="74" width="434" height="326" rx="14" fill="#fbfaf6"/><rect x="782" y="74" width="434" height="326" rx="14" fill="url(#grid)"/>
+  <rect x="807" y="106" width="386" height="270" fill="none" stroke="#4b5550" stroke-width="10"/>
+  <rect x="830" y="129" width="174" height="75" rx="9" fill="#cc9b83" stroke="#b7856e"/>
+  <rect x="844" y="143" width="146" height="44" rx="6" fill="none" stroke="#f4e3d6" stroke-width="2"/><path d="M916 143V187" stroke="#f4e3d6" stroke-width="2"/>
+  <rect x="1041" y="131" width="123" height="53" rx="6" fill="#bdab7f" stroke="#a99870"/><path d="M1052 143H1153" stroke="#efe8d0" stroke-width="2"/>
+  <rect x="1082" y="203" width="45" height="44" rx="7" fill="#abc0c6" stroke="#93aeb5"/><rect x="1089" y="210" width="31" height="27" rx="4" fill="none" stroke="#e1eaed" stroke-width="2"/>
+  <rect x="869" y="238" width="92" height="49" rx="5" fill="#dac7a1" stroke="#c6b388"/>
+  <path d="M1007 194H1041" stroke="#738671" stroke-width="2" stroke-dasharray="4 4"/><circle cx="1007" cy="194" r="3" fill="#738671"/><circle cx="1041" cy="194" r="3" fill="#738671"/>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="600" text-anchor="middle" fill="#485346"><text x="916" y="172">SOFA</text><text x="1103" y="163">DESK</text><text x="915" y="267">TABLE</text></g>
+  <rect x="912" y="421" width="179" height="30" rx="15" fill="#f8f7f3"/><text x="1002" y="441" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="600" text-anchor="middle" fill="#626c60">YOUR SPACE. TO SCALE.</text>
+</svg>

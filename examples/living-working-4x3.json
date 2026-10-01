@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "name": "Living + working",
+  "createdAt": "2026-10-01T00:00:00.000Z",
+  "updatedAt": "2026-10-01T00:00:00.000Z",
+  "units": "metric",
+  "settings": {
+    "wallHeight": 2.4,
+    "wallThickness": 0.12,
+    "gridSize": 0.1,
+    "snap": true,
+    "showGrid": true
+  },
+  "walls": [
+    {
+      "id": "2fca95b8-3ba7-40e1-b4e2-d8a5928828e3",
+      "a": {
+        "x": -0.06,
+        "y": -0.06
+      },
+      "b": {
+        "x": 4.06,
+        "y": -0.06
+      },
+      "thickness": 0.12,
+      "height": 2.4
+    },
+    {
+      "id": "171c6f98-1ad1-4d5e-8d25-c53a452b3274",
+      "a": {
+        "x": 4.06,
+        "y": -0.06
+      },
+      "b": {
+        "x": 4.06,
+        "y": 3.06
+      },
+      "thickness": 0.12,
+      "height": 2.4
+    },
+    {
+      "id": "33475516-a4f0-4d5e-a78f-5fc43b468812",
+      "a": {
+        "x": 4.06,
+        "y": 3.06
+      },
+      "b": {
+        "x": -0.06,
+        "y": 3.06
+      },
+      "thickness": 0.12,
+      "height": 2.4
+    },
+    {
+      "id": "47e47177-e21d-4faa-94d6-97ca53c1274d",
+      "a": {
+        "x": -0.06,
+        "y": 3.06
+      },
+      "b": {
+        "x": -0.06,
+        "y": -0.06
+      },
+      "thickness": 0.12,
+      "height": 2.4
+    }
+  ],
+  "furniture": [
+    {
+      "type": "sofa",
+      "name": "Sofa",
+      "width": 2,
+      "depth": 0.9,
+      "height": 0.8,
+      "color": "#d8a08a",
+      "id": "ce763a3f-b037-4b8a-b6f5-67cd5d8434ba",
+      "x": 1.15,
+      "y": 0.6,
+      "rotation": 0
+    },
+    {
+      "type": "table",
+      "name": "Coffee table",
+      "width": 1,
+      "depth": 0.55,
+      "height": 0.42,
+      "color": "#dcc9a6",
+      "id": "3f25c8cc-c01e-48e2-a9dc-2414af06fefe",
+      "x": 1.15,
+      "y": 1.65,
+      "rotation": 0
+    },
+    {
+      "type": "desk",
+      "name": "Desk",
+      "width": 1.2,
+      "depth": 0.6,
+      "height": 0.75,
+      "color": "#c5ad84",
+      "id": "26ecc7f2-850b-40f0-9c78-b79a67973dc3",
+      "x": 3.25,
+      "y": 0.5,
+      "rotation": 0
+    },
+    {
+      "type": "chair",
+      "name": "Chair",
+      "width": 0.5,
+      "depth": 0.5,
+      "height": 0.8,
+      "color": "#abc0c6",
+      "id": "809c2950-c87c-4abf-8411-268c51e99ac7",
+      "x": 3.25,
+      "y": 1.25,
+      "rotation": 0
+    }
+  ],
+  "measurements": [
+    {
+      "id": "65f76077-d735-46a7-91c6-f7e6e93644b6",
+      "a": {
+        "x": 2.15,
+        "y": 0.85
+      },
+      "b": {
+        "x": 2.65,
+        "y": 0.85
+      }
+    }
+  ],
+  "background": null
+}
