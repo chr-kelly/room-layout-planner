@@ -1,3 +1,4 @@
+import { message, PlannerError } from './messages.js';
 import { LIMITS, dataUrlBytes } from './model.js';
 /** Read image headers BEFORE decoding, so enormous images cannot allocate unrestricted rasters. */
 export function imageDimensions(buffer) {
@@ -18,15 +19,15 @@ export function imageDimensions(buffer) {
       i+=len;
     }
   }
-  throw new Error('Use a valid PNG or JPG image. PDF, SVG and damaged files are not supported.');
+  throw new PlannerError('ui.use_a_valid_png_or_jpg_image_pdf');
 }
 export function checkImageDimensions({width,height}) {
-  if(!width||!height||width>16000||height>16000||width*height>LIMITS.pixels) throw new Error('This image exceeds the 16 megapixel limit. Resize it before importing.');
+  if(!width||!height||width>16000||height>16000||width*height>LIMITS.pixels) throw new PlannerError('ui.this_image_exceeds_the_16_megapixel_limit_resize');
 }
-function decodeURL(url) {return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new Error('The image is damaged or cannot be decoded.'));image.src=url;});}
+function decodeURL(url) {return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new PlannerError('ui.the_image_is_damaged_or_cannot_be_decoded'));image.src=url;});}
 export async function readImage(file) {
-  if(file.size>LIMITS.bytes)throw new Error('Images must be 10 MB or smaller.');
-  if(!/\.(png|jpe?g)$/i.test(file.name)||!['image/png','image/jpeg',''].includes(file.type))throw new Error('Choose a PNG, JPG or JPEG file. PDF is not supported.');
+  if(file.size>LIMITS.bytes)throw new PlannerError('ui.images_must_be_10_mb_or_smaller');
+  if(!/\.(png|jpe?g)$/i.test(file.name)||!['image/png','image/jpeg',''].includes(file.type))throw new PlannerError('ui.choose_a_png_jpg_or_jpeg_file_pdf');
   const dims=imageDimensions(await file.arrayBuffer());checkImageDimensions(dims);
   const url=URL.createObjectURL(file);
   try { const image=await decodeURL(url);checkImageDimensions({width:image.naturalWidth,height:image.naturalHeight});return {image,url,width:image.naturalWidth,height:image.naturalHeight}; }
@@ -37,15 +38,15 @@ export async function decodeEmbedded(dataURL, expectedWidth, expectedHeight) {
   const bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
   const dims=imageDimensions(bytes.buffer);checkImageDimensions(dims);
   const image=await decodeURL(dataURL);
-  if(image.naturalWidth!==expectedWidth||image.naturalHeight!==expectedHeight)throw new Error('Embedded image dimensions do not match the project.');
+  if(image.naturalWidth!==expectedWidth||image.naturalHeight!==expectedHeight)throw new PlannerError('ui.embedded_image_dimensions_do_not_match_the_project');
   return {image,url:dataURL,width:image.naturalWidth,height:image.naturalHeight};
 }
 export async function compressBackground(image) {
   const canvas=document.createElement('canvas');canvas.width=image.naturalWidth;canvas.height=image.naturalHeight;
-  const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Image export is not supported in this browser.');
+  const ctx=canvas.getContext('2d');if(!ctx)throw new PlannerError('ui.image_export_is_not_supported_in_this_browser');
   ctx.drawImage(image,0,0);
   let url=canvas.toDataURL('image/png');if(dataUrlBytes(url)<=LIMITS.embeddedBytes)return url;
   ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,0,0);
   for(const quality of [0.88,0.72,0.56,0.4,0.25]) {url=canvas.toDataURL('image/jpeg',quality);if(dataUrlBytes(url)<=LIMITS.embeddedBytes)return url;}
-  throw new Error('The background cannot fit within 2 MB. Resize the original image or export without the background.');
+  throw new PlannerError('ui.the_background_cannot_fit_within_2_mb_resize');
 }

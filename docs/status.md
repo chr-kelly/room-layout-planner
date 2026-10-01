@@ -1,51 +1,47 @@
 # 项目状态
 
-更新日期：2026-10-01（Asia/Shanghai）。本次范围：多语言改造讨论、GitHub 介绍文档。
+更新日期：2026-10-02（Asia/Shanghai）。本次范围：保留原 PRD 功能，完成六语言改造与 GitHub 介绍。用户已授权自主推进；未授权公开发布。
 
-## 已完成
+## 需求和决策
 
-- [x] 本地静态预览：`http://127.0.0.1:8000/`。真实显示示例房间，并成功从 2D 切换到 3D、再返回 2D。
-- [x] Three.js 本机依赖已下载。此前 `python3 scripts/vendor.py --check` 输出 4 个 `OK`。
-- [x] 对照 3 个项目的 3 份选定官方介绍，已读 3 / 共 3：Excalidraw README、tldraw README、Sweet Home 3D 使用指南。未对这些项目的完整代码仓库或全部文档作穷尽调研。
-- [x] 英文 `README.md` 与现有中文 `README.zh-CN.md` 已同步整理：原创封面、真实 2D/3D 截图、功能表、三步使用方法、可折叠细节、隐私、托管、开发与许可证说明。
-- [x] 用户已选定首版 6 种语言：`en`、`zh-TW`、`ja`、`de`、`fr`、`es`。
+- 原始 PRD：用户提供的 DOCX 已完整读取，190 / 190 个非空段落、5 / 5 个表格、0 张内嵌图片。原文归档在 [source/prd-v0.1.md](source/prd-v0.1.md)。保留 F01–F12 与全部尺寸、文件和数据上限。
+- 增量依据：[prd.md](prd.md)、[ux.md](ux.md)、[plan.md](plan.md)。语言为 English、繁體中文、日本語、Deutsch、Français、Español；英文走根路径，中文使用 zh-TW。
+- 纯静态、同一编辑器、同一项目数据；一个紧凑语言菜单。语言切换不重载，不影响单位、撤销、选择或未提交输入。
+- 旧文件与用户名称保持字面值。新默认名称通过可选 nameKey 标识，改名即移除标识；不从英文名称猜测用户意图。
+- 语言使用本地 JS 模块，保留 connect-src 'none'，没有运行时第三方翻译请求。
 
-## 实际验证
+## 里程碑
 
-- 文档检查输出：`PASS 35 local README links/assets; 6 collapsible sections; SVG XML; 2 JPEG files`。
-- 两份 README 均已用 MarkdownIt 渲染，各生成 2 个表格。
-- 中文本地渲染预览：`http://127.0.0.1:8000/test-results/readme-preview.html`。
-- 浏览器读取结果：3 / 3 张图片 `loaded: true`；`horizontalOverflow: false`；快速开始锚点存在。
-- 本地 3D 查看时读取的控制台警告/错误数组为 `[]`。
-- 截图：`assets/readme/editor-2d.jpg`、`assets/readme/editor-3d.jpg`；README 渲染截图为 `test-results/readme-preview.jpg`。
-- 这是当前浏览器的局部运行与文档验证。本次未重跑完整单元/浏览器套件，也未进行真实手机或所有浏览器验收；原测试记录仍见 `TESTING.md`。
+- [x] M1：原需求基线、333 条文案 × 6 套语言包、稳定消息与错误参数、语言偏好和默认名称兼容结构。
+  - 红测试：新增多语言测试首次运行返回 ERR_MODULE_NOT_FOUND（i18n 模块尚未建立），退出码 1。
+  - 绿测试：原 55 项 + 新增 6 项，实际输出 tests 61 / pass 61 / fail 0 / skipped 0，退出码 0。
+  - 本地 Git 基线提交：d1e89f8；该目录此前不含 Git 元数据。没有远端或推送。
+- [ ] M2：编辑器、弹窗、帮助、Canvas/PNG、错误和辅助标签接入已编写，正在验证实际交互。
+- [ ] M3：六个静态入口已生成，正在检查子路径资源与发布包，并同步 README。
+- [ ] M4：原浏览器套件与新增六语言桌面/手机回归、截图、最终记录和本地提交。
 
-## 多语言改造建议（待确认方案，尚未实现）
+## 已有实际证据
 
-1. 保留纯静态、无应用构建的架构。6 种语言共用一个编辑器和同一套几何、保存、导入导出逻辑。
-2. 顶部增加一个语言菜单，使用语言自称：English、繁體中文、日本語、Deutsch、Français、Español。手机仍使用现有底部面板，语言入口保持紧凑。
-3. 英文使用根路径 `/`，其他语言使用 `/zh-TW/`、`/ja/`、`/de/`、`/fr/`、`/es/`。欢迎界面可按浏览器语言提供建议；用户选择应记住。具体自动推荐交互待确认，根路径保持可明确访问的英文页面。
-4. 语言切换只更新界面和地址，不重新载入、替换或缩放方案，也不清空选择、撤销历史或正在编辑的输入。所有语言共享原有项目存储键，语言偏好另存；存储失败也允许本次会话继续切换。
-5. 按功能提取文案：静态标题/按钮、动态属性和弹窗、加载/成功/错误状态、帮助、可访问标签、2D 画布以及 PNG 导出。翻译不得仅覆盖首页。
-6. 当前 CSP 为 `connect-src 'none'`，直接 `fetch` JSON 语言包会被阻止。建议采用本地 JavaScript 语言模块，在现有 `script-src 'self'` 范围内加载，保持无需运行时第三方请求；不以放宽安全策略来加载翻译。
-7. 核心校验通过稳定错误码和参数表达，界面翻译成人话；不要通过匹配英文错误句子替换，或把翻译逻辑耦合到几何计算。
-8. 区分预设标签与用户名称。新默认名称可以随语言显示；用户改名、自定义名称和原有 JSON 名称应保留原文。不能凭“名称恰好等于 Desk”等英文字符串判断用户是否改过名。
-9. 公制/英制独立于语言。内部仍用米存储；显示可按语言格式化数字，输入须正确处理对应的小数格式。六种语言使用同一批已知尺寸验收。
-10. 德法西较长文案需要实测桌面和手机；按钮短文案、布局弹性、可访问的完整描述，以及画布按实际文字宽度排版共同保证简洁。现有功能、页面和家具预设均保留。
-11. 六套语言包采用同一组文案键，逐语言检查缺失文案、变量、错误路径、表单、画布和导出；旧版 JSON、用户名称、几何和历史须有跨语言回归验证。逐语言审校，不能用机器翻译结果直接视为完成。
+- 本地服务：http://127.0.0.1:8000/。原英文示例房间此前已实见 2D → 3D → 2D。
+- 本次已实际打开 /zh-TW/：静态标题、语言菜单、家具库、属性、单位、辅助标签显示繁体中文；旧存档名称 Living + working、Sofa 等按兼容规则保持原文。
+- Three.js 本地依赖：python3 scripts/vendor.py --check，4 个 OK。
+- 英文及现有中文 README 已制作原创 SVG 封面与真实 2D/3D 截图。此前检查：PASS 35 local README links/assets; 6 collapsible sections; SVG XML; 2 JPEG files；渲染 3 / 3 图片加载成功，无横向溢出。
+- README 参考读取 3 / 共 3 份选定官方材料：Excalidraw README、tldraw README、Sweet Home 3D 使用指南；未声称穷尽读取它们的全部仓库。
 
-## 下一步和卡点
+## 卡点及待确认决策
 
-- [ ] 确认上述多语言交互方案，然后按用户约定由 Claude 补齐需求/交互说明和实现计划，再由 Codex 执行。
-- [ ] 本目录没有原始 PRD 或实现计划，仅文档提到上传过的 PRD；目前不重写旧 PRD。正式更新时需要关联原文，或由用户确认以本次增量需求为依据。
-- [ ] 多语言应用代码尚未改动；README 已明确标注当前界面仍为英语、6 种语言处于方案阶段。
-- [ ] 当前目录没有 `.git`，未创建、关联、提交或推送 GitHub 仓库。
-- [ ] 尚未公开部署 Cloudflare Pages 或 GitHub Pages。
+- 本机 Claude Code 的只读计划请求返回 Your account is on hold and can't use Claude Code.，退出码 1。因此本次增量文档及计划由 Codex 编写，未取得 Claude 独立审阅，也没有冒充其产出。用户“全权交给你”的授权下继续本地实现。
+- 没有可用的 Claude Design 能力，未虚构画布链接或截图。延用现有产品布局，仅增加语言入口，没有另做 HTML UI 原型。
+- 六语言文案已逐条编写并检查一致性；仍未由六种语言的母语使用者独立审校。
+- 尚未进行真实 iPhone/Android、Safari/Firefox 和原 PRD 的 30 FPS 实机验收。
+- 尚未创建或推送公开 GitHub 仓库，也未部署 Cloudflare Pages。
+
+## 下一步
+
+完成跨语言保留输入与项目状态的实际验证、德法西手机长文案检查；运行完整浏览器测试，再同步 README 的真实语言状态和部署步骤。
 
 ## 参考来源
 
-- [Excalidraw README](https://github.com/excalidraw/excalidraw/blob/master/README.md)：封面、真实效果图、简短定位、快速开始与翻译贡献入口。
-- [tldraw README](https://github.com/tldraw/tldraw/blob/main/README.md)：清楚的首屏层次、少量入口与文档分层。本次借鉴呈现方式，没有引入其 SDK。
-- [Sweet Home 3D 使用指南](https://www.sweethome3d.com/users-guide/)：从底图比例到墙体、家具和 3D 的实用操作顺序。
-- [Intl.NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)：数字本地化的浏览器标准接口。
-- [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)：浏览器、源和持久化限制。
+- [Excalidraw README](https://github.com/excalidraw/excalidraw/blob/master/README.md)
+- [tldraw README](https://github.com/tldraw/tldraw/blob/main/README.md)
+- [Sweet Home 3D 使用指南](https://www.sweethome3d.com/users-guide/)
