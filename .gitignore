@@ -10,3 +10,4 @@ playwright-report/
 site/
 *.log
 *.tmp
+marketing/room-plan-video/out/

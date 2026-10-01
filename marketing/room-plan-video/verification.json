@@ -1,0 +1,130 @@
+{
+  "recorded_date": "2026-10-02",
+  "files": [
+    {
+      "language": "en",
+      "path": "out/room-plan-en-1080x1920.mp4",
+      "size_bytes": 2161689,
+      "sha256": "f47ea28f68a02c9a6c649f4af8e8e296bb911f405f3f331b87ad5b1b4d520214",
+      "duration_seconds": 28.0,
+      "width": 1080,
+      "height": 1920,
+      "fps": "30/1",
+      "decoded_frames": 840,
+      "video_codec": "h264",
+      "pixel_format": "yuv420p",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "faststart": true,
+      "complete_decode_exit": 0,
+      "review_frame_count": 16,
+      "audio_volume": [
+        "[Parsed_volumedetect_0 @ 0x92f060a80] mean_volume: -24.1 dB",
+        "[Parsed_volumedetect_0 @ 0x92f060a80] max_volume: -5.7 dB"
+      ]
+    },
+    {
+      "language": "zh-CN",
+      "path": "out/room-plan-zh-CN-1080x1920.mp4",
+      "size_bytes": 2165512,
+      "sha256": "64dcdfc0230e3fc6adaa397b86177c42cd7a49eb78713956a8284d72d030675a",
+      "duration_seconds": 28.0,
+      "width": 1080,
+      "height": 1920,
+      "fps": "30/1",
+      "decoded_frames": 840,
+      "video_codec": "h264",
+      "pixel_format": "yuv420p",
+      "audio_codec": "aac",
+      "audio_channels": 2,
+      "faststart": true,
+      "complete_decode_exit": 0,
+      "review_frame_count": 16,
+      "audio_volume": [
+        "[Parsed_volumedetect_0 @ 0x987064a80] mean_volume: -24.1 dB",
+        "[Parsed_volumedetect_0 @ 0x987064a80] max_volume: -5.7 dB"
+      ]
+    }
+  ],
+  "timeline_samples_seconds": [
+    0,
+    1.5,
+    3.8,
+    6.8,
+    9,
+    11.5,
+    13.5,
+    15,
+    17,
+    18.8,
+    20.5,
+    21.6,
+    23.3,
+    24.8,
+    26.2,
+    27.9
+  ],
+  "visual_review": {
+    "status": "completed",
+    "inspected_final_decoded_frames": 32,
+    "total_review_frames": 32,
+    "contact_sheets": [
+      "out/final-frames-en.jpg",
+      "out/final-frames-zh-CN.jpg"
+    ],
+    "checks": [
+      "No missing glyphs or clipped titles",
+      "Real English and Traditional Chinese editor screenshots",
+      "Room and furniture dimensions match the example model",
+      "Readable six-language labels and sharing CTA"
+    ]
+  },
+  "published": false,
+  "browser_preview": {
+    "url": "http://localhost:8000/marketing/room-plan-video/",
+    "languages": [
+      {
+        "language": "zh-CN",
+        "duration_seconds": 28,
+        "width": 1080,
+        "height": 1920,
+        "playback_from_seconds": 0.019447,
+        "playback_to_seconds": 21.280534,
+        "paused_during_observation": false,
+        "media_error": null,
+        "download_path": "out/room-plan-zh-CN-1080x1920.mp4",
+        "cover_path": "out/cover-zh-CN.jpg"
+      },
+      {
+        "language": "en",
+        "duration_seconds": 28,
+        "width": 1080,
+        "height": 1920,
+        "playback_from_seconds": 0.24971,
+        "playback_to_seconds": 26.136917,
+        "paused_during_observation": false,
+        "media_error": null,
+        "download_path": "out/room-plan-en-1080x1920.mp4",
+        "cover_path": "out/cover-en.jpg"
+      }
+    ],
+    "language_switch_download_links": "passed",
+    "delivery_default": "zh-CN, paused on poster",
+    "promo_kit_link": "out/room-plan-promo-kit.zip",
+    "horizontal_overflow": false,
+    "screenshot": "out/player-preview.png"
+  },
+  "promo_kit": {
+    "path": "out/room-plan-promo-kit.zip",
+    "size_bytes": 4407335,
+    "sha256": "9188a168a3d820422bd85edabc45906d2df86c3f4eb1860c129a1e0a8220a81b",
+    "entry_count": 8,
+    "complete_readback": true,
+    "zip_crc_check": "passed"
+  },
+  "source_syntax": {
+    "javascript_modules": 8,
+    "python_scripts": 2,
+    "result": "passed"
+  }
+}
