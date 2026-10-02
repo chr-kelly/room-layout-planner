@@ -39,9 +39,11 @@
 
 ## 快速开始
 
-在 `room-layout-planner` 文件夹中打开终端，执行：
+打开终端，下载源码并启动本地服务：
 
 ```sh
+git clone https://github.com/chr-kelly/room-layout-planner.git
+cd room-layout-planner
 python3 scripts/vendor.py
 python3 scripts/vendor.py --check
 python3 -m http.server 8000 --bind 127.0.0.1

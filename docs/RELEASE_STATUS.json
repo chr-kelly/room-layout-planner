@@ -63,10 +63,14 @@
   "claude_independent_review": "unavailable: local account restricted",
   "repository": {
     "local_initialized": true,
-    "remote_configured": false,
-    "public_created": false,
+    "remote_configured": true,
+    "public_created": true,
     "uploaded": false,
-    "publication_authorized": true
+    "publication_authorized": true,
+    "owner": "chr-kelly",
+    "name": "room-layout-planner",
+    "url": "https://github.com/chr-kelly/room-layout-planner",
+    "default_branch": "main"
   },
   "github_actions": {
     "configured": true,

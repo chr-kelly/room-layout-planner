@@ -1,6 +1,6 @@
 # 项目状态
 
-更新日期：2026-10-02（Asia/Shanghai）。本次范围：在已完成的六语言应用、中英文介绍与宣传片源码基础上，准备推送公开 GitHub 仓库。用户明确提出“我现在想推送上github了，开源”，已授权公开源码；发布账号仍待选择。演示站点部署和宣传成片对外发布未包含在本次范围。
+更新日期：2026-10-02（Asia/Shanghai）。本次范围：在已完成的六语言应用、中英文介绍与宣传片源码基础上，准备推送公开 GitHub 仓库。用户明确提出“我现在想推送上github了，开源”，已授权公开源码；用户已选择 chr-kelly/room-layout-planner。演示站点部署和宣传成片对外发布未包含在本次范围。
 
 ## 需求和决策
 
@@ -53,8 +53,9 @@
   - 最新完整浏览器证据已同步到 [browser-results.json](browser-results.json)；失败证据保留在被忽略的 test-results/prepublish-browser-results-before-fix.json。Python 语法和 git diff --check 均通过；两份 README 的 39 / 39 个本地引用存在。
   - 校正旧 START_HERE 与依赖说明中的“仅英文、测试未运行、未打包 Three.js”陈述；未修改应用功能或语言文案。旧未跟踪 SHA256SUMS 已过时，已保留原件并重新生成覆盖当前 88 个文件的清单；88 / 88 个 SHA-256 校验通过。
 - [ ] M8：创建公开 GitHub 仓库、推送 main，并检查远端文件与 GitHub Actions。
-  - GitHub 插件账号 OliverBennettdev；本机 gh 账号 chr-kelly。已询问用户发布账号与仓库名，等待明确选择；尚未创建仓库或配置远端。
-  - 创建能力已通过 Composio 发现，但其 GitHub 连接尚未授权；本机 gh 已登录。收到账号选择后使用该账号可用的方式继续，不混用账号。
+  - 用户明确选择 chr-kelly/room-layout-planner；使用 gh 的 chr-kelly 登录创建。实际输出：https://github.com/chr-kelly/room-layout-planner。
+  - gh repo view 实际返回 visibility PUBLIC / isEmpty true；GitHub 插件只读核验返回 visibility public / owner chr-kelly。origin 已指向该仓库，等待推送与 CI 检查。
+  - 中英文 README 已同步加入该仓库的克隆命令；保留 MIT 及现有第三方署名。
 
 ## 已有实际证据
 
@@ -71,12 +72,12 @@
 - 没有可用的 Claude Design 能力，未虚构画布链接或截图。延用现有产品布局，仅增加语言入口，没有另做 HTML UI 原型。
 - 六语言文案已逐条编写并检查一致性；仍未由六种语言的母语使用者独立审校。
 - 尚未进行真实 iPhone/Android、Safari/Firefox 和原 PRD 的 30 FPS 实机验收。
-- 用户已授权开源；尚未创建或推送公开 GitHub 仓库，等待选择发布账号。未部署 Cloudflare Pages。
+- 已创建公开 chr-kelly/room-layout-planner 仓库；源码推送与 GitHub Actions 检查正在进行。未部署 Cloudflare Pages。
 - 宣传素材已本地完成，尚未对外上传或发布，也没有病毒传播或转化效果数据。发布配文的产品网址需在项目实际上线后替换。
 
 ## 下一步
 
-收到发布账号选择后，创建公开 room-layout-planner 仓库，推送已验证的源码及现有历史，核对远端提交和文件，并检查自动测试结果。演示网站部署另行执行；真实设备、其他浏览器、母语文案与 Claude 独立审阅仍是后续验收项。
+推送已验证的源码及现有历史到 chr-kelly/room-layout-planner，核对远端提交和文件，并检查自动测试结果。演示网站部署另行执行；真实设备、其他浏览器、母语文案与 Claude 独立审阅仍是后续验收项。
 
 ## 参考来源
 

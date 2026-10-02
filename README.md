@@ -43,9 +43,11 @@ desk, chair, cabinet or coffee table, then adjust and compare your options.
 
 ## Quick start
 
-Open a terminal in the `room-layout-planner` folder:
+Clone the repository and start a local server:
 
 ```sh
+git clone https://github.com/chr-kelly/room-layout-planner.git
+cd room-layout-planner
 python3 scripts/vendor.py
 python3 scripts/vendor.py --check
 python3 -m http.server 8000 --bind 127.0.0.1
