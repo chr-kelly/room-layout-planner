@@ -1,7 +1,7 @@
 {
   "version": "0.1.0",
   "distribution": "source-with-verified-local-vendor-and-static-package",
-  "release_status": "locally-verified-development-preview",
+  "release_status": "public-source-development-preview",
   "recorded_date": "2026-10-02",
   "languages": [
     "en",
@@ -65,16 +65,28 @@
     "local_initialized": true,
     "remote_configured": true,
     "public_created": true,
-    "uploaded": false,
+    "uploaded": true,
     "publication_authorized": true,
     "owner": "chr-kelly",
     "name": "room-layout-planner",
     "url": "https://github.com/chr-kelly/room-layout-planner",
-    "default_branch": "main"
+    "default_branch": "main",
+    "verified_source_commit": "ea981a0502368b50b9811bb9cfb899ad1f086406",
+    "verified_file_count": 89
   },
   "github_actions": {
     "configured": true,
-    "executed": false
+    "executed": true,
+    "run_id": 37002366061,
+    "url": "https://github.com/chr-kelly/room-layout-planner/actions/runs/37002366061",
+    "head_sha": "ea981a0502368b50b9811bb9cfb899ad1f086406",
+    "status": "completed",
+    "conclusion": "success",
+    "unit_passed": 64,
+    "unit_failed": 0,
+    "unit_skipped": 0,
+    "browser_passed": 39,
+    "browser_failed": 0
   },
   "deployment": {
     "performed": false,

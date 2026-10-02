@@ -103,6 +103,23 @@ HTTP server and writes a JSON report, screenshots and downloads to `test-results
 the full Chrome for Testing binary from Playwright's `chromium-1200` installation.
 On Linux, Playwright may need its documented `install --with-deps chromium` setup.
 
+## Public GitHub verification — 2026-10-02
+
+The source is published at [chr-kelly/room-layout-planner](https://github.com/chr-kelly/room-layout-planner)
+on `main` under MIT. The first [GitHub Actions run](https://github.com/chr-kelly/room-layout-planner/actions/runs/37002366061)
+completed successfully for commit `ea981a0502368b50b9811bb9cfb899ad1f086406`.
+Its actual log reports 64 unit tests passed, 0 failed and 0 skipped; 39 browser
+scenarios passed and 0 failed; all four vendor files verified; and 30 app-only
+static files with six language entries. The Linux runner used Chromium
+143.0.7499.4. The complete log is retained locally in the ignored
+`test-results/github-actions-37002366061.log`; the online log and browser
+artifact are available from the run link above.
+
+The complete, untruncated remote tree matched all 89 / 89 local Git blobs.
+No environment files, installed dependencies, generated site, test output or
+rendered promotional videos were tracked. The source repository publication
+does not establish a deployed public demo.
+
 ## Gates still open
 
 Real iOS Safari and Android Chrome devices; current stable desktop Chrome, Edge,
@@ -114,6 +131,5 @@ Claude independent review and a Claude Design canvas were unavailable because
 the local Claude account was restricted. This work used the existing product
 layout; it does not claim a Claude review or a new Design prototype.
 
-GitHub Actions have not run. The repository exists locally with no remote;
-no public GitHub repository or Cloudflare Pages site has been published.
-Workflow files and local screenshots do not establish online deployment success.
+A public demo has not been deployed. The manual Pages deployment workflow has
+not run; its presence and local screenshots do not establish deployment success.

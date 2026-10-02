@@ -153,8 +153,9 @@ verifies dependencies and packages only app assets. It is manually triggered;
 repository Pages must be configured to use GitHub Actions. It is a separate
 hosting option from Cloudflare Pages.
 
-**No public demo is published by this delivery.** The GitHub workflows have not
-run. A workflow file or local screenshot is not a verified online deployment.
+The source is public on [GitHub](https://github.com/chr-kelly/room-layout-planner).
+See [GitHub Actions](https://github.com/chr-kelly/room-layout-planner/actions/workflows/test.yml)
+for automatic regression results. A public demo has not been deployed.
 
 ## Development and contributing
 

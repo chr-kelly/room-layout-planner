@@ -9,7 +9,7 @@
 39 个浏览器场景通过，0 失败；六语言静态打包通过。
 详见 [测试记录](docs/TESTING.md) 和 [项目状态](docs/status.md)。
 真实手机、其他浏览器和独立母语审校仍待验收。公开仓库：[chr-kelly/room-layout-planner](https://github.com/chr-kelly/room-layout-planner)。
-源码上传正在进行，尚未部署公开演示站点。
+源码与历史已推送到 main 分支，尚未部署公开演示站点。
 
 ## 本地启动
 

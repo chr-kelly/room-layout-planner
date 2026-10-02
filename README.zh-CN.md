@@ -125,7 +125,9 @@ python3 scripts/package.py --fetch-vendor
 附带的 [GitHub Pages 工作流](.github/workflows/pages.yml) 会下载、校验依赖，只打包应用资源。
 需将仓库 Pages 配置为使用 GitHub Actions，再手动运行。它与 Cloudflare Pages 是两种独立托管方式。
 
-**本次交付尚未发布公开演示站点。** GitHub 工作流也尚未运行；配置文件和本地截图不等于线上部署验证。
+源码已在 [GitHub](https://github.com/chr-kelly/room-layout-planner) 公开。
+自动回归结果见 [GitHub Actions](https://github.com/chr-kelly/room-layout-planner/actions/workflows/test.yml)。
+公开演示站点尚未部署。
 
 ## 开发与贡献
 
