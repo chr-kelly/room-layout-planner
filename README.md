@@ -1,18 +1,10 @@
-<p align="center">
-  <img src="assets/readme/hero.svg" alt="Room Layout Planner — Make room for what matters" width="100%">
-</p>
+# Room Layout Planner
 
-<h1 align="center">Room Layout Planner</h1>
+**Find a furniture layout that fits, before you move.**
 
-<p align="center"><strong>Find a furniture layout that fits, before you move.</strong></p>
+[中文说明](README.zh-CN.md) · [Quick start](#quick-start) · [User guide](docs/USER_GUIDE.md) · [Contribute](CONTRIBUTING.md) · [MIT license](LICENSE)
 
-<p align="center">
-  <a href="README.zh-CN.md">中文说明</a> ·
-  <a href="#quick-start">Quick start</a> ·
-  <a href="docs/USER_GUIDE.md">User guide</a> ·
-  <a href="CONTRIBUTING.md">Contribute</a> ·
-  <a href="LICENSE">MIT license</a>
-</p>
+![Room Layout Planner — Make room for what matters](assets/readme/hero.svg)
 
 A free, local-first **2D & 3D room planner**. Draw a room, try furniture at its real
 size, and explore the result in 3D. Start with a blank room or an editable example;
@@ -28,7 +20,7 @@ Save JSON to keep editing, or export PNG to show your layout.
 
 | Arrange in 2D | Explore in 3D |
 | --- | --- |
-| <img src="assets/readme/editor-2d.jpg" alt="Actual 2D editor showing the example room, furniture library, dimensions and details panel" width="480"> | <img src="assets/readme/editor-3d.jpg" alt="Actual Three.js overview of the same example room with simple box furniture and cutaway walls" width="480"> |
+| ![Actual 2D editor showing the example room, furniture library, dimensions and details panel](assets/readme/editor-2d.jpg) | ![Actual Three.js overview of the same example room with simple box furniture and cutaway walls](assets/readme/editor-3d.jpg) |
 | Drag furniture and edit exact dimensions. | Orbit, zoom, or try the basic walk-through. |
 
 The example is a **4 × 3 m room measured between inside wall faces**.
@@ -71,8 +63,7 @@ and verifies SHA-256 hashes. If the files are already present, you can skip it
 and run the second command to verify them. Node 20+ is needed only for development tests,
 regenerating translated HTML entries, or preparing a deployment folder.
 
-<details>
-<summary><strong>Local setup and offline use</strong></summary>
+### Local setup and offline use
 
 This project is a source distribution. Dependency files must be present before
 3D can work; `scripts/vendor.py` downloads the pinned files. Downloading requires
@@ -86,8 +77,6 @@ After downloading the files, you can run the folder through a local static serve
 without an external internet connection. An online hosted copy is not a
 service-worker/PWA offline installation.
 
-</details>
-
 ## Your data stays with you
 
 No application backend, accounts, analytics, ads, remote fonts or AI API.
@@ -98,8 +87,7 @@ ordinary page requests. [Privacy and data limits](docs/PRIVACY.md).
 Images remain in session memory by default; reselect them after a reload, or
 include the image in a JSON export. Browser storage does not sync between devices.
 
-<details>
-<summary><strong>Dimensions, images and current limits</strong></summary>
+### Dimensions, images and current limits
 
 - Geometry is stored in metres. Unit changes never rescale it.
 - **CL** wall labels show centerline length, not clear inside dimensions.
@@ -114,8 +102,6 @@ include the image in a JSON export. Browser storage does not sync between device
   does not check collision, access or clearance. Furniture overlap is not validated.
 - Clearing browser data, private browsing, storage quotas or changing the site
   or port may affect recovery. Keep backups outside the browser.
-
-</details>
 
 **Planning only · Verify on site.** Check actual furniture, walls, doors, lifts,
 routes and clearances. This tool does not assess construction, structures,
@@ -186,8 +172,7 @@ The browser suite manages its own local server. `CHROMIUM_PATH` can select an
 installed Chromium. Actual results and screenshots are written to `test-results/`.
 Authored coverage and completed runs are recorded separately in [TESTING](docs/TESTING.md).
 
-<details>
-<summary><strong>Project structure</strong></summary>
+### Project structure
 
 ```text
 index.html                App entry and accessible controls
@@ -206,8 +191,6 @@ assets/readme/            Original banner and real local screenshots
 scripts/                  Verified dependencies, HTML entries and static packaging
 .github/workflows/        Tests and manual GitHub Pages deployment
 ```
-
-</details>
 
 ## License and credits
 

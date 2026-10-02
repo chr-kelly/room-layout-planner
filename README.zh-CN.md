@@ -1,18 +1,10 @@
-<p align="center">
-  <img src="assets/readme/hero.svg" alt="Room Layout Planner — 为重要的生活腾出空间" width="100%">
-</p>
+# Room Layout Planner
 
-<h1 align="center">Room Layout Planner</h1>
+**搬家之前，先找到适合你的家具布局。**
 
-<p align="center"><strong>搬家之前，先找到适合你的家具布局。</strong></p>
+[English](README.md) · [快速开始](#快速开始) · [使用指南](docs/USER_GUIDE.md) · [参与贡献](CONTRIBUTING.md) · [MIT 许可证](LICENSE)
 
-<p align="center">
-  <a href="README.md">English</a> ·
-  <a href="#快速开始">快速开始</a> ·
-  <a href="docs/USER_GUIDE.md">使用指南</a> ·
-  <a href="CONTRIBUTING.md">参与贡献</a> ·
-  <a href="LICENSE">MIT 许可证</a>
-</p>
+![Room Layout Planner — 为重要的生活腾出空间](assets/readme/hero.svg)
 
 免费、优先在本地处理的 **2D / 3D 房间家具试摆工具**。画出房间，按真实尺寸摆放家具，
 再用 3D 查看布局。可以从空白房间开始，也可以直接试用示例，或导入户型图片、校准比例后描墙。
@@ -26,7 +18,7 @@
 
 | 在 2D 中试摆 | 在 3D 中查看 |
 | --- | --- |
-| <img src="assets/readme/editor-2d.jpg" alt="真实 2D 编辑器截图：示例房间、家具库、尺寸与属性面板" width="480"> | <img src="assets/readme/editor-3d.jpg" alt="同一示例房间的真实 3D 截图：长方体家具与剖切墙面" width="480"> |
+| ![真实 2D 编辑器截图：示例房间、家具库、尺寸与属性面板](assets/readme/editor-2d.jpg) | ![同一示例房间的真实 3D 截图：长方体家具与剖切墙面](assets/readme/editor-3d.jpg) |
 | 拖动家具，输入准确尺寸。 | 旋转、缩放，或进行基础漫游。 |
 
 示例房间的**内净尺寸为 4 × 3 米**。3D 家具使用简单长方体，地面是示意平面。
@@ -64,8 +56,7 @@ python3 -m http.server 8000 --bind 127.0.0.1
 Python 3 即可启动静态服务，无需应用构建。第一条命令从 Three.js 官方上游下载固定版本并校验 SHA-256。
 文件已经齐备时可以跳过第一条，执行第二条校验现有文件。只有开发测试、重新生成语言入口或准备发布目录时需要 Node 20+。
 
-<details>
-<summary><strong>本地依赖与离线运行</strong></summary>
+### 本地依赖与离线运行
 
 本项目是源码分发。3D 运行前需要具备依赖文件，`scripts/vendor.py` 会下载固定版本文件。
 下载需要联网，应用运行时使用本地依赖，不使用 CDN。下载失败会显示错误；缺少 3D 依赖时仍可使用 2D 编辑。
@@ -73,8 +64,6 @@ Python 3 即可启动静态服务，无需应用构建。第一条命令从 Thre
 通过 HTTP 静态服务访问。不要直接双击 `index.html`，浏览器会限制 `file://` 下的 ES 模块。
 
 文件齐备后，本地静态服务可以在无外网环境下使用。在线托管版本没有实现 service worker / PWA 离线安装。
-
-</details>
 
 ## 你的数据由你保存
 
@@ -84,8 +73,7 @@ Python 3 即可启动静态服务，无需应用构建。第一条命令从 Thre
 **主动下载 JSON 备份。** 自动保存属于当前浏览器、当前站点，不能自动跨设备同步。
 图片默认只保留在当前会话内存中；刷新后重新选图、确认配准，或导入带图片的 JSON。
 
-<details>
-<summary><strong>尺寸、图片和当前边界</strong></summary>
+### 尺寸、图片和当前边界
 
 - 几何数据内部统一用米保存，切换单位不缩放几何。
 - 墙上 **CL** 标签表示中心线长度，不是房间内净尺寸。
@@ -97,8 +85,6 @@ Python 3 即可启动静态服务，无需应用构建。第一条命令从 Thre
 - 3D 剖切只改变墙面的显示高度，不改变保存的墙高。漫游不检查碰撞、可达性或通道间隙。
   家具重叠也不会自动判定。
 - 隐私浏览、清理站点数据、存储额度不足，以及更换站点或端口，都会影响恢复。备份保存在浏览器之外。
-
-</details>
 
 **仅供布局规划，必须现场核实。** 检查真实家具、墙体、门、电梯、搬运路径与间隙。
 本工具不作施工、承重、合规、搬运可达性或安全判断。
@@ -155,8 +141,7 @@ python3 tests/browser_test.py
 浏览器测试脚本会管理自己的本地服务。可用 `CHROMIUM_PATH` 指向已安装的 Chromium；
 实际报告和截图保存在 `test-results/`。编写覆盖与实际运行分开记录，见 [TESTING](docs/TESTING.md)。
 
-<details>
-<summary><strong>项目结构</strong></summary>
+### 项目结构
 
 ```text
 index.html                应用入口与可访问控件
@@ -175,8 +160,6 @@ assets/readme/            原创封面与真实本地截图
 scripts/                  依赖校验、语言入口与静态发布包
 .github/workflows/        测试与手动 GitHub Pages 部署
 ```
-
-</details>
 
 ## 许可证与致谢
 

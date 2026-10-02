@@ -40,6 +40,10 @@
   - 素材包实际输出：PASS: 8 / 8 ZIP entries match the deliverables; CRC check passed; 4.20 MiB。含两 MP4、两封面、两 SRT、中英文配文与中文使用说明。
   - 源码语法实际输出：PASS: 8 JavaScript modules and 2 Python scripts pass syntax checks。提交前确认 .gitignore 已排除 .env、node_modules、site/、宣传 out/；播放器已展示并保留，最终界面截图归档在 out/player-preview.png。
   - 完整证据：[verification.json](../marketing/room-plan-video/verification.json)；源码与重现步骤：[README.md](../marketing/room-plan-video/README.md)；分镜与来源：[brief.md](../marketing/room-plan-video/brief.md)。成片位于该目录 out/，保留本地、由 Git 忽略。没有改动应用模块，因此未重复运行 M4 已通过的应用回归。
+- [x] M6：按用户反馈，将中英文 README 改为纯 Markdown，便于直接阅读和编辑。
+  - 标题、导航、图片均使用 Markdown；三处 HTML 折叠区改为普通小标题。完整功能、尺寸边界、安装、部署、语言、贡献与许可证说明保留，英文和中文同步修改。
+  - 实际输出：PASS README.md: 0 HTML tags; 3 Markdown images; 3 ordinary subsection headings；README.zh-CN.md 同样通过。PASS: 39 local file references exist; 6 image references retained; code fences paired。git diff --check 退出码 0。
+  - 仅修改两份 README 与本状态记录，不改变应用、宣传视频或原有测试；因此未重复运行应用回归。已请求在 Codex 中显示新版中文 README；应用返回 queued，未把排队状态当作已经打开。
 
 ## 已有实际证据
 
