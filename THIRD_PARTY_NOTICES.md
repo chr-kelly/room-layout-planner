@@ -6,8 +6,8 @@ Source: https://github.com/mrdoob/three.js/tree/r180
 Copyright © 2010–2025 three.js authors  
 License: MIT; the complete upstream license is included in `vendor/three/LICENSE`.
 
-Runtime files fetched by `scripts/vendor.py` (JavaScript files are not included
-in this source-only archive): `three.module.min.js`, `three.core.min.js`, `OrbitControls.js`.
+Bundled runtime files, reproducibly fetched and verified by `scripts/vendor.py`:
+`three.module.min.js`, `three.core.min.js`, `OrbitControls.js`.
 The only source modification is changing the one `from 'three'` import in
 `OrbitControls.js` to `from './three.module.min.js'` so no import map, CDN,
 package manager, or bundler is needed. Upstream SHA-256 checksums are pinned in

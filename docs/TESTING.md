@@ -4,6 +4,27 @@ Recorded 2026-10-02. This replaces the earlier 2026-10-01 container record with
 an actual completed local run. Local automation and real-device acceptance are
 recorded separately; the original PRD's real-device sign-off remains open.
 
+## Pre-publication rerun — 2026-10-02
+
+The fresh unit run completed with `tests 64 / pass 64 / fail 0 / skipped 0`, exit 0.
+The first fresh browser run returned 36 passed / 3 failed, exit 1: two
+`wait_for_function` expression strings attempted evaluation under the app's
+strict Content Security Policy. Both waits now pass functions with the same
+predicates. All original assertions and the CSP remain unchanged.
+
+The complete rerun returned 39 passed / 0 failed, exit 0, using the environment
+above. [browser-results.json](browser-results.json) now contains this rerun.
+The failing local report is retained in the ignored
+`test-results/prepublish-browser-results-before-fix.json`.
+The current run observed 122 frames over 2.0127 seconds, or 60.6 mean FPS;
+this remains a headless software-rendering observation. The earlier performance
+measurement below documents the preceding run.
+
+The vendor check verified all four pinned files; static packaging returned
+`PASS: 30 app-only files in site/; 6 language entries; no docs, tests, .env or Git data.`
+All 39 current local links across the two READMEs resolve. Python syntax and
+`git diff --check` passed.
+
 ## Completed local run
 
 Environment: macOS arm64; Node.js v22.17.0; Python 3.9.6; Playwright 1.57.0;

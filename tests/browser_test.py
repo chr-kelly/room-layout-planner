@@ -57,7 +57,7 @@ def create_room(p,width=6,depth=6):
     p.locator('#rectangle-room').click();p.locator('#field-room-width-m').fill(str(width));p.locator('#field-room-depth-m').fill(str(depth));p.get_by_role('button',name='Create room',exact=True).click()
 def import_image(p,data=IMAGE,name='plan.png',mime='image/png'):
     p.locator('#image-file').set_input_files(payload(data,name,mime))
-    p.wait_for_function('plannerTest.snapshot().background !== null')
+    p.wait_for_function('()=>plannerTest.snapshot().background !== null')
 def calibrate(p):
     bg=snapshot(p)['background']
     for x in [100,500]: click_point(p,bg['x']+x*bg['metersPerPixel'],bg['y']+100*bg['metersPerPixel'])
@@ -165,7 +165,7 @@ with sync_playwright() as pw:
             data=pathlib.Path(info.value.path()).read_bytes();raw=json.loads(data);assert raw['background']['dataURL'].startswith('data:image/png;base64,');close_dialog(p)
             p.locator('#project-file').set_input_files(payload(data));p.get_by_role('button',name='Confirm',exact=True).click();assert geometry(p)==before
             assert p.evaluate('plannerTest.history().undo')==0
-            p.wait_for_timeout(650);p.reload();p.wait_for_function('window.plannerTest !== undefined');assert geometry(p)==before;expect(p.locator('#notice')).to_contain_text('Background not restored')
+            p.wait_for_timeout(650);p.reload();p.wait_for_function('()=>window.plannerTest !== undefined');assert geometry(p)==before;expect(p.locator('#notice')).to_contain_text('Background not restored')
     run('Embedded-background JSON roundtrip, import history boundary and refresh recovery',test_json_roundtrip)
     def test_invalid_json():
         with page() as (p,e,r):

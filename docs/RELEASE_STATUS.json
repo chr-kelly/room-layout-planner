@@ -3,7 +3,14 @@
   "distribution": "source-with-verified-local-vendor-and-static-package",
   "release_status": "locally-verified-development-preview",
   "recorded_date": "2026-10-02",
-  "languages": ["en", "zh-TW", "ja", "de", "fr", "es"],
+  "languages": [
+    "en",
+    "zh-TW",
+    "ja",
+    "de",
+    "fr",
+    "es"
+  ],
   "english_path": "/",
   "runtime_vendor_files_bundled": true,
   "vendor_setup_command": "python3 scripts/vendor.py",
@@ -47,8 +54,8 @@
   },
   "real_device_acceptance": "not performed",
   "performance_fps": {
-    "observed_mean": 60.9,
-    "scope": "2.0038-second headless software-rendering observation",
+    "observed_mean": 60.6,
+    "scope": "2.0127-second headless software-rendering observation",
     "real_device_certified": false,
     "evidence": "docs/browser-results.json"
   },
@@ -58,7 +65,8 @@
     "local_initialized": true,
     "remote_configured": false,
     "public_created": false,
-    "uploaded": false
+    "uploaded": false,
+    "publication_authorized": true
   },
   "github_actions": {
     "configured": true,

@@ -1,6 +1,6 @@
 # 项目状态
 
-更新日期：2026-10-02（Asia/Shanghai）。本次范围：保留原 PRD 功能，完成六语言改造、GitHub 介绍，以及用户追加的英语国际版和中文版竖屏宣传片。用户已授权自主推进；未授权公开发布。
+更新日期：2026-10-02（Asia/Shanghai）。本次范围：在已完成的六语言应用、中英文介绍与宣传片源码基础上，准备推送公开 GitHub 仓库。用户明确提出“我现在想推送上github了，开源”，已授权公开源码；发布账号仍待选择。演示站点部署和宣传成片对外发布未包含在本次范围。
 
 ## 需求和决策
 
@@ -45,6 +45,17 @@
   - 实际输出：PASS README.md: 0 HTML tags; 3 Markdown images; 3 ordinary subsection headings；README.zh-CN.md 同样通过。PASS: 39 local file references exist; 6 image references retained; code fences paired。git diff --check 退出码 0。
   - 仅修改两份 README 与本状态记录，不改变应用、宣传视频或原有测试；因此未重复运行应用回归。已请求在 Codex 中显示新版中文 README；应用返回 queued，未把排队状态当作已经打开。
 
+- [x] M7：GitHub 开源前准备与完整本地复测。
+  - 本地 Git 初检：`git ls-files` 得到的 88 / 88 个文件、`git rev-list --objects --all` 得到的 121 / 121 个历史 blob 已扫描常见私钥、GitHub/OpenAI/Slack token、云访问标识与敏感赋值模式；匹配 0。不把模式扫描当作所有形式敏感信息的绝对保证。
+  - `.env`、`.env.production`、`node_modules/`、`site/`、`test-results/`、宣传片 `out/` 的 6 / 6 个 `git check-ignore` 检查通过；无这些目录的已跟踪文件，无超过 20 MiB 的已跟踪文件。
+  - 单元测试实际输出：tests 64 / pass 64 / fail 0 / skipped 0，退出码 0。依赖实际输出：4 个 OK；静态打包实际输出：PASS: 30 app-only files in site/; 6 language entries; no docs, tests, .env or Git data.
+  - 浏览器首轮实际输出：passed 36 / failed 3，退出码 1；两处等待表达式触发 CSP 的 EvalError。改为等价函数，保留全部断言、39 个场景及原页面安全策略。完整复跑实际输出：passed 39 / failed 0，退出码 0。
+  - 最新完整浏览器证据已同步到 [browser-results.json](browser-results.json)；失败证据保留在被忽略的 test-results/prepublish-browser-results-before-fix.json。Python 语法和 git diff --check 均通过；两份 README 的 39 / 39 个本地引用存在。
+  - 校正旧 START_HERE 与依赖说明中的“仅英文、测试未运行、未打包 Three.js”陈述；未修改应用功能或语言文案。旧未跟踪 SHA256SUMS 已过时，已保留原件并重新生成覆盖当前 88 个文件的清单；88 / 88 个 SHA-256 校验通过。
+- [ ] M8：创建公开 GitHub 仓库、推送 main，并检查远端文件与 GitHub Actions。
+  - GitHub 插件账号 OliverBennettdev；本机 gh 账号 chr-kelly。已询问用户发布账号与仓库名，等待明确选择；尚未创建仓库或配置远端。
+  - 创建能力已通过 Composio 发现，但其 GitHub 连接尚未授权；本机 gh 已登录。收到账号选择后使用该账号可用的方式继续，不混用账号。
+
 ## 已有实际证据
 
 - 本地服务：http://127.0.0.1:8000/。本次供查看的干净示例：http://localhost:8000/zh-TW/；已实见六语言与 2D → 3D → 2D。
@@ -60,12 +71,12 @@
 - 没有可用的 Claude Design 能力，未虚构画布链接或截图。延用现有产品布局，仅增加语言入口，没有另做 HTML UI 原型。
 - 六语言文案已逐条编写并检查一致性；仍未由六种语言的母语使用者独立审校。
 - 尚未进行真实 iPhone/Android、Safari/Firefox 和原 PRD 的 30 FPS 实机验收。
-- 尚未创建或推送公开 GitHub 仓库，也未部署 Cloudflare Pages。
+- 用户已授权开源；尚未创建或推送公开 GitHub 仓库，等待选择发布账号。未部署 Cloudflare Pages。
 - 宣传素材已本地完成，尚未对外上传或发布，也没有病毒传播或转化效果数据。发布配文的产品网址需在项目实际上线后替换。
 
 ## 下一步
 
-本次本地改造及宣传片已完成，可直接体验繁中预览，或打开宣传成片播放器查看两版视频并下载素材包。项目上线后把发布配文中的网址补齐即可使用；公开发布前确认。真实设备、其他浏览器、母语文案与 Claude 独立审阅仍是后续验收项。
+收到发布账号选择后，创建公开 room-layout-planner 仓库，推送已验证的源码及现有历史，核对远端提交和文件，并检查自动测试结果。演示网站部署另行执行；真实设备、其他浏览器、母语文案与 Claude 独立审阅仍是后续验收项。
 
 ## 参考来源
 

@@ -165,9 +165,9 @@
   ],
   "performance": {
     "frames": 122,
-    "seconds": 2.0038000000953677,
+    "seconds": 2.0126999999999997,
     "over33ms": 0,
-    "mean_fps": 60.9,
+    "mean_fps": 60.6,
     "note": "Headless software-rendering observation; not real-device certification or a guaranteed FPS."
   },
   "not_tested": [

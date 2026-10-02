@@ -1,47 +1,48 @@
-# 本次交付说明
+# 开源项目使用说明
 
 ## 当前状态
 
-这是按上传 PRD 编写的 0.1.0 **开发预览源码**，不是完整验收或已上线的产品。
-源码已经交付；55 项单元测试通过，另有浏览器测试脚本待运行。
-GitHub 仓库创建与上传尚未执行，等待仓库创建权限授权。
-拟使用账号 `OliverBennettdev`，拟建仓库 `room-layout-planner`。
+这是 Room Layout Planner 0.1.0 开发预览源码，采用 [MIT 许可证](LICENSE)。
+包含英语、繁体中文、日语、德语、法语、西班牙语界面；英语走根路径，繁中入口为 `/zh-TW/`。
+
+2026-10-02 的开源前实际验证：64 项单元测试通过，0 失败、0 跳过；
+39 个浏览器场景通过，0 失败；六语言静态打包通过。
+详见 [测试记录](docs/TESTING.md) 和 [项目状态](docs/status.md)。
+真实手机、其他浏览器和独立母语审校仍待验收。公开仓库推送正在准备，尚未部署公开演示站点。
 
 ## 本地启动
 
-在解压后的本目录中执行：
+在项目根目录执行：
 
 ```sh
-python3 scripts/vendor.py
 python3 scripts/vendor.py --check
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-第一步联网下载并校验本地 Three.js 依赖。随后访问 http://127.0.0.1:8000。
-不需要 Node、npm 或构建步骤；Node 只用于运行开发单元测试。
-源码包没有打包 Three.js 的三个 JavaScript 文件，所以不是完整离线包。
-依赖缺失时 3D 不可用；2D 编辑采用独立模块。
+访问 **http://127.0.0.1:8000/zh-TW/**，点击 **試用範例**，或从顶部菜单选择其他语言。
+
+仓库已包含固定版本 Three.js 文件及上游 MIT 许可证。如果依赖缺失，先运行
+`python3 scripts/vendor.py` 联网下载并校验。文件齐备后，本地运行不需要外网。
+Python 3 即可启动；Node 20+ 用于开发测试、更新静态语言入口和准备部署包。
 
 ## 包含的实现
 
-英文界面；空白/示例项目；本地 PNG/JPEG 底图；两点已知长度校准；
-直线墙与矩形内净尺寸；家具长宽高、位置、角度、复制删除；
-公制/英制与两点测距；60 步撤销重做；本地自动保存与失败状态；
-校验后 JSON 导入、JSON/PNG 导出；按需加载的 Three.js 鸟瞰和基础漫游。
+空白和示例项目；本地 PNG/JPEG 户型图与两点比例校准；直线墙与矩形内净尺寸；
+家具尺寸、位置、角度、拖动、复制和删除；公制/英制与两点测距；60 步撤销重做；
+本地自动保存与失败提示；经过校验的 JSON 导入导出、2D PNG 导出；
+同一方案的 Three.js 鸟瞰和基础漫游；六语言就地切换并保留草稿与历史。
 
-这些是源码中包含的功能，不代表全部通过浏览器或真实手机验收。
 底图默认不随自动保存持久化；需要备份时下载带图片的 JSON。
-产品不提供自动识墙、承重/通行安全判断或装修预算。
+完整操作说明和功能边界见 [中文 README](README.zh-CN.md) 与 [使用指南](docs/USER_GUIDE.md)。
 
-## 测试与发布
+## 测试与部署
 
-详见 docs/TESTING.md 和 docs/unit-results.tap。浏览器测试环境受限，
-没有可据以报告的端到端通过数量、实机测试、界面截图或 FPS 结果。
-不要把本交付标记为所有 P0 验收通过。
+测试命令和依赖安装见 [测试记录](docs/TESTING.md)。保留全部原始测试与断言。
+测试截图、`.env`、`node_modules/`、`.venv/`、`site/` 和宣传成片 `out/` 已由 Git 忽略。
+宣传片源码、来源及重现步骤保留在 [marketing/room-plan-video](marketing/room-plan-video/README.md)。
 
-.github/workflows/ 提供测试与手动 Pages 部署配置，尚未在 GitHub 运行。
-下一步是完成 GitHub 创建权限授权、创建仓库并上传，再执行 CI，
-修复实际发现的问题，完成浏览器验收后再发布正式演示站点。
+运行 `python3 scripts/package.py --fetch-vendor` 生成只含应用资源的 `site/`。
+部署方法见 [静态部署说明](docs/DEPLOYMENT.md)。测试工作流在推送后自动运行；
+Pages 部署工作流需要手动触发。源码公开与演示网站上线分别记录。
 
-原创代码为 MIT；第三方许可证与参考说明见 LICENSE、THIRD_PARTY_NOTICES.md。
-完整操作说明见 README.zh-CN.md 和 docs/USER_GUIDE.md。
+第三方依赖与参考说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
